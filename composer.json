@@ -1,0 +1,12 @@
+{
+    "name": "thomas/php-blog",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Thomas\\PhpBlog\\": "src/"
+        }
+    },
+    "require-dev": {
+        "laravel/pint": "^1.27"
+    }
+}
