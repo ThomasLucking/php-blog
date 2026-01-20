@@ -1,5 +1,19 @@
+### 1. Dependencies & Tooling
+# Never commit external libraries; others should run 'composer install' or 'npm install'
 /vendor/
-/Data/database.db
-/config
-/node_modules
-src/tailwindcsssrc/tailwindcss
+/node_modules/
+
+src/tailwindcss
+
+/Data/*.db
+/public/*.db
+
+/config/database.php
+
+/public/css/style.css
+/src/style.css
+
+.DS_Store
+.vscode/
+.idea/
+*.log
