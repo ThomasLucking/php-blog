@@ -1,1 +1,5 @@
 /vendor/
+/Data/database.db
+/config
+/node_modules
+src/tailwindcsssrc/tailwindcss
