@@ -6,7 +6,7 @@
         <form action="#">
             <h5 class="text-xl font-bold text-white mb-6">Create an account</h5>
             <div class="mb-4">
-                <label for="email" class="block mb-2 text-sm font-medium text-white">Your username</label>
+                <label for="name" class="block mb-2 text-sm font-medium text-white">Your username</label>
                 <input type="text" id="name"
                     class="bg-slate-800 border border-[#1e293b] text-white text-sm rounded-md focus:ring-[#60a5fa] focus:border-[#60a5fa] block w-full px-3 py-2.5 placeholder:text-slate-500 outline-none"
                     placeholder="Coding4life" required />

@@ -2,11 +2,11 @@
 <?php require_once __DIR__ . '/../partials/navbar.php'; ?>
 
 <main class="grow flex items-center justify-center">
-    <div class="w-full max-w-sm p-6 border-2 rounded-md border-[#1e293b] bg-[#0f172a] shadow-xl">
+    <div class="w-full max-w-sm p-6 border-2 rounded-md border-slate-800 bg-slate-900 shadow-xl">
         <form action="#">
             <h5 class="text-xl font-bold text-white mb-6">Sign in to our platform</h5>
             <div class="mb-4">
-                <label for="email" class="block mb-2 text-sm font-medium text-white">Your username</label>
+                <label for="name" class="block mb-2 text-sm font-medium text-white">Your username</label>
                 <input type="text" id="name"
                     class="bg-slate-800 border border-[#1e293b] text-white text-sm rounded-md focus:ring-[#60a5fa] focus:border-[#60a5fa] block w-full px-3 py-2.5 placeholder:text-slate-500 outline-none"
                     placeholder="example@company.com" required />

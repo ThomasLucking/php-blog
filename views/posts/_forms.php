@@ -1,8 +1,5 @@
-<?php require_once __DIR__ . '/../partials/header.php'; ?>
-<?php require_once __DIR__ . '/../partials/navbar.php'; ?>
-
 <main class="grow flex flex-col m-6 ">
-    <form action="/index.php" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4 w-full">
+    <form action="#" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4 w-full">
 
         <div>
             <label for="title" class="block mb-2 text-sm font-medium text-white">Post title</label>
@@ -23,13 +20,15 @@
         </div>
 
         <div>
-            <select class="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-slate-800 border border-[#1e293b] rounded-md" name="cars" id="cars">
-                <option class="" value="tech">Tech & AI</option>
-                <option value="personal">Personal Finance</option>
-                <option value="health">Health & Wellness</option>
-                <option value="sustainability">Sustainability</option>
-                <option value="food">Food</option>
-                <option value="nature">Nature & Trees</option>
+            <select
+                class="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-slate-800 border border-[#1e293b] rounded-md"
+                name="cars" id="cars">
+                <option class="" value="volvo">Tech & AI</option>
+                <option value="saab">Personal Finance</option>
+                <option value="opel">Health & Wellness</option>
+                <option value="audi">Sustainability</option>
+                <option value="audi">Food</option>
+                <option value="audi">Nature & Trees</option>
             </select>
         </div>
 
@@ -57,11 +56,8 @@
         <div class="flex justify-end mt-4">
             <button type="submit"
                 class="inline-block bg-blue-600 text-white text-sm font-bold rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 px-8 py-3 shadow-md outline-none transition-all active:scale-95">
-                Publish
+                Save and Publish
             </button>
         </div>
     </form>
 </main>
-
-
-<?php require_once __DIR__ . '/../partials/footer.php'; ?>
