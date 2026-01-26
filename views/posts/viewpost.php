@@ -17,7 +17,7 @@
         Developers and IT Operations.
     </p>
     <div class="flex items-center">
-        <a href="/index.php"
+        <a href="/"
             class="inline-flex items-center bg-[#60a5fa] text-white px-5 py-2.5 rounded font-semibold transition hover:bg-blue-500">
             Go back
         </a>

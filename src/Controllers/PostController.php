@@ -9,13 +9,21 @@ class PostController
 {
     public function __construct(
         private PostModel $model,
-        private ImageService $imageService
+        private ImageService $imageService,
+        
     ) {
     }
 
     public function create()
     {
         require_once __DIR__ . "/../../views/posts/create.php";
+    }
+    public function fetch(){
+        $posts = $this->model->fetchall();
+        require_once __DIR__ . "/../../views/posts/index.php";
+        header("Location: /");
+        exit;
+
     }
 
     public function store(): never
@@ -63,6 +71,7 @@ class PostController
         exit;
 
     }
+
 }
 
 

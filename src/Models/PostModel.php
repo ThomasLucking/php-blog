@@ -2,6 +2,7 @@
 
 namespace Thomas\PhpBlog\Models;
 
+
 use PDO;
 
 class PostModel
@@ -23,5 +24,18 @@ class PostModel
 
         }
     }
+    public function fetchall()
+    {
+        try {
 
+            $stmt = $this->pdo->prepare('select * from posts');
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            throw new \Exception('Could not create the post.', 0, $e);
+
+
+        }
+
+    }
 }

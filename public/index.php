@@ -8,7 +8,7 @@ use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Controllers\PostController;
 
 
-$pdo = Database::getConnection(); 
+$pdo = Database::getConnection();
 $postModel = new PostModel($pdo);
 $imageService = new ImageService();
 
@@ -25,10 +25,14 @@ $page = $_GET['page'];
 
 if ($page === 'create' && $method === 'GET') {
     $controller->create();
-    exit; 
+    exit;
 }
 if ($uri === '/posts/store' && $method === 'POST') {
     $controller->store();
+    exit;
+}
+if ($uri === '/') {
+    $controller->fetch();
     exit;
 }
 
