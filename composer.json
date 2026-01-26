@@ -7,6 +7,7 @@
         }
     },
     "require-dev": {
-        "laravel/pint": "^1.27"
+        "laravel/pint": "^1.27",
+        "symfony/var-dumper": "^8.0"
     }
 }
