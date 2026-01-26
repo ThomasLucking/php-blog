@@ -23,7 +23,8 @@ class Database
 
                 self::$instance = new PDO($dsn, null, null, $options);
             } catch (PDOException $e) {
-                die("Database connection failed: " . $e->getMessage());
+                throw $e;
+                
             }
         }
 

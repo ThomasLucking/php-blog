@@ -18,10 +18,10 @@ class PostModel
             $stmt->execute($data);
             return true;
         } catch (\PDOException $e) {
-            throw new \Exception(message: $e->getMessage());
+            throw new \Exception('Could not create the post.', 0, $e);
 
 
         }
     }
-    
+
 }

@@ -5,7 +5,6 @@ namespace Thomas\PhpBlog\Controllers;
 use Thomas\PhpBlog\Models\PostModel;
 use Thomas\PhpBlog\Services\ImageService;
 
-session_start();
 class PostController
 {
     public function __construct(
@@ -24,7 +23,6 @@ class PostController
         $error = [];
 
 
-
         if ($_SERVER["REQUEST_METHOD"] != "POST") {
             header("Location: /posts/create");
 
@@ -32,12 +30,12 @@ class PostController
 
         $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_SPECIAL_CHARS);
         if (!$title) {
-            $errors['title'] = "Title is required.";
+            $error['title'] = "Title is required.";
             
         }
         $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_SPECIAL_CHARS);
         if (!$content) {
-            $errors["content"] = "content is required";
+            $error["content"] = "content is required";
             
         }
 
@@ -51,7 +49,6 @@ class PostController
             require_once __DIR__ . "/../../views/posts/create.php";
             exit;
         }
-
 
         $postData = [
             "title" => $title,
