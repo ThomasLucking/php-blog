@@ -28,11 +28,11 @@ class PostModel
     {
         try {
 
-            $stmt = $this->pdo->prepare('select * from posts');
+            $stmt = $this->pdo->prepare('select id, title, content, image from posts');
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            throw new \Exception('Could not create the post.', 0, $e);
+            throw new \Exception('Could not fetch posts.', 0, $e);
 
 
         }

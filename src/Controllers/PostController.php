@@ -21,8 +21,7 @@ class PostController
     public function fetch(){
         $posts = $this->model->fetchall();
         require_once __DIR__ . "/../../views/posts/index.php";
-        header("Location: /");
-        exit;
+
 
     }
 

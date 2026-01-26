@@ -40,7 +40,8 @@
             </button>
 
             <div class="text-sm font-medium text-slate-400">
-                Not registered? <a href="/page=register" class="text-[#60a5fa] hover:underline">Create account</a>
+                Not registered? <a href="/index.php?page=register" class="text-[#60a5fa] hover:underline">Create
+                    account</a>
             </div>
         </form>
     </div>
