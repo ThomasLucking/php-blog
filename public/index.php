@@ -1,4 +1,37 @@
 <?php
+
+
+require_once __DIR__ . '/../vendor/autoload.php';
+use Thomas\PhpBlog\Config\Database;
+use Thomas\PhpBlog\Models\PostModel;
+use Thomas\PhpBlog\Services\ImageService;
+use Thomas\PhpBlog\Controllers\PostController;
+
+
+$pdo = Database::getConnection(); 
+$postModel = new PostModel($pdo);
+$imageService = new ImageService();
+
+
+$controller = new PostController($postModel, $imageService);
+
+
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
+
+$page = $_GET['page'];
+
+
+
+if ($page === 'create' && $method === 'GET') {
+    $controller->create();
+    exit; 
+}
+if ($uri === '/posts/store' && $method === 'POST') {
+    $controller->store();
+    exit;
+}
+
 $routes = [
     'home' => __DIR__ . '/../views/posts/index.php',
     'login' => __DIR__ . '/../views/auth/login.php',
@@ -13,7 +46,7 @@ $route = $_GET['page'] ?? 'home';
 if (array_key_exists($route, $routes)) {
     require $routes[$route];
 } else {
-    // Optionally, show a 404 page
+
     http_response_code(404);
-    // require __DIR__ . '/../views/errors/404.php';
+
 }
