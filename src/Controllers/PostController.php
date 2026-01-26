@@ -10,7 +10,7 @@ class PostController
     public function __construct(
         private PostModel $model,
         private ImageService $imageService,
-        
+
     ) {
     }
 
@@ -18,12 +18,39 @@ class PostController
     {
         require_once __DIR__ . "/../../views/posts/create.php";
     }
-    public function fetch(){
+    public function fetch()
+    {
         $posts = $this->model->fetchall();
         require_once __DIR__ . "/../../views/posts/index.php";
         header("Location: /");
         exit;
 
+    }
+    public function update()
+    {
+
+        $id = $_POST["id"];
+        $data = [
+            "title" => $_POST["title"],
+            "content" => $_POST["content"],
+        ];
+        $this->model->update($id, $data);
+        require_once __DIR__ . "/../../views/posts/edit.php";
+        header("Location: /");
+
+    }
+
+    public function edit()
+    {
+        $id = $_GET['id'] ?? null;
+        $post = $this->model->findId($id);
+
+        if (!$post) {
+            header("Location: /"); 
+            exit;
+        }
+
+        require_once __DIR__ . "/../../views/posts/edit.php";
     }
 
     public function store(): never
@@ -39,19 +66,19 @@ class PostController
         $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_SPECIAL_CHARS);
         if (!$title) {
             $error['title'] = "Title is required.";
-            
+
         }
         $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_SPECIAL_CHARS);
         if (!$content) {
             $error["content"] = "content is required";
-            
+
         }
 
         $imagePath = $this->imageService->handleUpload($_FILES['cover_photo'] ?? null);
-        
+
         if (!$imagePath) {
             $error["cover_photo"] = 'image is required';
-            
+
         }
         if (!empty($error)) {
             require_once __DIR__ . "/../../views/posts/create.php";

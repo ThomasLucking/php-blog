@@ -35,6 +35,10 @@ if ($uri === '/') {
     $controller->fetch();
     exit;
 }
+if ($uri === '/edit') {
+    $controller->update();
+    exit;
+}
 
 $routes = [
     'home' => __DIR__ . '/../views/posts/index.php',
