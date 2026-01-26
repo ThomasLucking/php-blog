@@ -12,7 +12,7 @@
             </div>
             <div class="flex items-center space-x-4 mr-4 text-white">
                 <a class="font-semibold" href="/index.php?page=create">Create post</a>
-                <a class="font-semibold" href="/index.php">All posts</a>
+                <a class="font-semibold" href="/">All posts</a>
                 <a href="/index.php?page=login" class="inline-block bg-[#60a5fa] text-white px-4 py-2 rounded">
                     Login
                 </a>
