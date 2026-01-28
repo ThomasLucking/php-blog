@@ -14,6 +14,8 @@ class PostController
     ) {
     }
 
+    
+
     public function create()
     {
         require_once __DIR__ . "/../../views/posts/create.php";
@@ -47,7 +49,6 @@ class PostController
 
 
         $this->model->update($id, $updateData);
-        require_once __DIR__ . "/../../views/posts/edit.php";
         Response::redirect('/');
 
     }
@@ -67,6 +68,19 @@ class PostController
         }
 
         require_once __DIR__ . "/../../views/posts/edit.php";
+    }
+
+    public function fetchViaID()
+    {
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $segments = explode('/', trim($uri, '/'));
+
+        $id = filter_var($segments[1], FILTER_SANITIZE_NUMBER_INT);
+
+        $post = $this->model->findId($id);
+        require_once __DIR__ . "/../../views/posts/viewpost.php";
+        
+
     }
 
     public function store(): never

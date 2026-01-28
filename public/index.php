@@ -23,7 +23,6 @@ $id = filter_var($segments[1], FILTER_SANITIZE_NUMBER_INT);
 
 
 
-
 $router->get('/create', function () use ($controller) {
     $controller->create();
 });
@@ -48,6 +47,13 @@ $router->post('/posts/store', function () use ($controller) {
     Response::redirect('/');
 });
 
+
+if ($segments[0] === 'post' && isset($segments[1])) {
+    $currentId = $segments[1];
+    $router->get('/post/' . $currentId, function () use ($controller) {
+        $controller->fetchViaID();
+    });
+}
 
 $router->post('/create', fn() => $controller->store());
 
