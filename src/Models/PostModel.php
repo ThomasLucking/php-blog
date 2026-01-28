@@ -47,6 +47,9 @@ class PostModel
     }
     public function update($id, array $data)
     {
+        if (empty($data)) {
+            return false; 
+        }
         $fields = [];
         foreach ($data as $column => $value) {
             $fields[] = "{$column} = :{$column}";

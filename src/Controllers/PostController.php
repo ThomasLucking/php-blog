@@ -4,7 +4,7 @@ namespace Thomas\PhpBlog\Controllers;
 
 use Thomas\PhpBlog\Models\PostModel;
 use Thomas\PhpBlog\Services\ImageService;
-
+use Thomas\PhpBlog\Config\Response;
 class PostController
 {
     public function __construct(
@@ -22,8 +22,7 @@ class PostController
     {
         $posts = $this->model->fetchall();
         require_once __DIR__ . "/../../views/posts/index.php";
-        header("Location: /");
-        exit;
+
 
     }
     public function update()
@@ -36,11 +35,11 @@ class PostController
 
         
         if (!empty($_POST['title'])) {
-            $updateData['title'] = $_POST['title'];
+            $updateData['title'] = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
         }
 
         if (!empty($_POST['content'])) {
-            $updateData['content'] = $_POST['content'];
+            $updateData['content'] = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_SPECIAL_CHARS);
         }
         if (isset($_FILES['cover_photo']) && $_FILES['cover_photo']['error'] === UPLOAD_ERR_OK) {
             $updateData['image'] = $this->imageService->handleUpload($_FILES['cover_photo']);
@@ -49,7 +48,7 @@ class PostController
 
         $this->model->update($id, $updateData);
         require_once __DIR__ . "/../../views/posts/edit.php";
-        header("Location: /");
+        Response::redirect('/');
 
     }
 

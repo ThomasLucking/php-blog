@@ -21,10 +21,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 $segments = explode('/', trim($uri, '/'));
 $id = filter_var($segments[1], FILTER_SANITIZE_NUMBER_INT);
 
+
+
+
 $router->get('/create', function () use ($controller) {
     $controller->create();
-    Response::redirect('http://localhost:8000/create');
-
 });
 
 $router->get('/', fn() => $controller->fetch());
@@ -32,10 +33,15 @@ $router->get('/', fn() => $controller->fetch());
 $router->get('/edit/' . $id, fn() => $controller->edit());
 
 
-$router->post('/update/' . $id, function () use ($controller) {
-    $controller->update();
-    Response::redirect('/');
-});
+$action = $segments[0] ?? ''; // 'update', 'edit', etc.
+$id = $segments[1] ?? null;
+
+if($id && is_numeric($id)) {
+    $router->post('/update/' . $id, function () use ($controller) {
+        $controller->update();
+        Response::redirect('/');
+    });
+}
 
 $router->post('/posts/store', function () use ($controller) {
     $controller->store();
@@ -46,7 +52,13 @@ $router->post('/posts/store', function () use ($controller) {
 $router->post('/create', fn() => $controller->store());
 
 $action = $router->resolve($_SERVER['REQUEST_URI'], method: $_SERVER['REQUEST_METHOD']);
-$action();
+if (is_callable($action)) {
+    $action();
+} else {
+    http_response_code(404);
+    echo "404 - Page Not Found";
+    exit;
+}
 
 http_response_code(404);
 echo "404 - Page Not Found";
