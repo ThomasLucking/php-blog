@@ -3,7 +3,7 @@
 namespace Thomas\PhpBlog\Config;
 
 
-class Response
+class Direct
 {
     public static function redirect(string $url, int $code = 303): void
     {
