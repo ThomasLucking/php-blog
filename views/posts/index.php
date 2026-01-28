@@ -23,7 +23,7 @@
                     <img class="rounded-sm mb-4" src="/uploads/<?= $post['image'] ?>" alt="Blog Post" />
                 </a>
 
-                <a href="/post/ <?= $post['id'] ?>">
+                <a href="/post/<?= $post['id'] ?>">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-white wrap-anywhere">
                         <?= $post['title'] ?>
                     </h5>
