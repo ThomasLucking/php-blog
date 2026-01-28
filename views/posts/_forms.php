@@ -1,16 +1,31 @@
-<main class="grow flex flex-col m-6 ">
-    <form action="#" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4 w-full">
+<?php
 
+$error = $error ?? [];
+
+
+if (isset($error['cover_photo'])) {
+    $inputColors = 'border-red-400 bg-red-900/20 text-red-400 placeholder:text-red-300';
+} else {
+    $inputColors = 'border-[#1e293b] bg-slate-800 text-white placeholder:text-slate-500';
+}
+
+?>
+
+
+
+<main class="grow flex flex-col m-6 ">
+    <form action="/update/<?= $post['id'] ?>" method="POST" enctype="multipart/form-data"
+        class="flex flex-col gap-4 w-full">
         <div>
             <label for="title" class="block mb-2 text-sm font-medium text-white">Post title</label>
-            <input type="text" id="title" name="title"
+            <input type="text" id="title" name="title" value="<?= htmlspecialchars($post['title']) ?>"
                 class="bg-slate-800 border border-[#1e293b] text-white text-sm rounded-md focus:ring-[#60a5fa] focus:border-[#60a5fa] block w-full p-3.5 shadow-sm placeholder:text-slate-500 outline-none transition">
         </div>
 
         <div class="grow">
             <label for="content" class="block mb-2 text-sm font-medium text-white">Post content</label>
             <textarea id="content" name="content" rows="15" placeholder="Start writing your masterpiece..."
-                class="bg-slate-800 border border-[#1e293b] text-white text-sm rounded-md focus:ring-[#60a5fa] focus:border-[#60a5fa] block w-full p-3.5 shadow-sm placeholder:text-slate-500 outline-none transition resize-y"></textarea>
+                class="bg-slate-800 border border-[#1e293b] text-white text-sm rounded-md focus:ring-[#60a5fa] focus:border-[#60a5fa] block w-full p-3.5 shadow-sm placeholder:text-slate-500 outline-none transition resize-y"><?= htmlspecialchars($post['content'] ?? '') ?></textarea>
         </div>
 
         <div>

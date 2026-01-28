@@ -27,7 +27,6 @@ class PostModel
     public function fetchall()
     {
         try {
-
             $stmt = $this->pdo->prepare('select * from posts');
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -38,4 +37,30 @@ class PostModel
         }
 
     }
+
+    public function findId($id)
+    {
+        $stmt = $this->pdo->prepare('select * from posts where id = ?');
+        $stmt->execute([$id]);
+
+        return $stmt->fetch();
+    }
+    public function update($id, array $data)
+    {
+        if (empty($data)) {
+            return false; 
+        }
+        $fields = [];
+        foreach ($data as $column => $value) {
+            $fields[] = "{$column} = :{$column}";
+        }
+        $setClause = implode(', ', $fields);
+        $sql = "update posts set {$setClause} where id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $data['id'] = $id;
+
+        return $stmt->execute($data);
+    }
+
+
 }

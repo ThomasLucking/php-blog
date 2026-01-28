@@ -24,7 +24,7 @@
                 </a>
 
                 <a href="/index.php?page=viewpost">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white wrap-anywhere">
                         <?= $post['title'] ?>
                     </h5>
                 </a>
@@ -32,11 +32,16 @@
                 <p class="mb-6 text-slate-400 text-sm leading-relaxed">
                     <?= $post['content'] ?>
                 </p>
+                <div class="flex justify-start gap-3">
+                    <a href="/index.php?page=viewpost"
+                        class="inline-flex items-center bg-[#60a5fa] text-white px-5 py-2.5 rounded font-semibold transition hover:bg-blue-500">
+                        See post
+                    </a>
+                    <a href="/edit/<?= $post['id'] ?>">
+                        <img class="w-10 h-10 ml-5" src="/assets/Gear.png" alt="Edit">
+                    </a>
+                </div>
 
-                <a href="/index.php?page=viewpost"
-                    class="inline-flex items-center bg-[#60a5fa] text-white px-5 py-2.5 rounded font-semibold transition hover:bg-blue-500">
-                    See post
-                </a>
             </div>
         <?php endforeach; ?>
     </div>
