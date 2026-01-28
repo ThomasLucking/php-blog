@@ -1,60 +1,55 @@
 <?php
-
-
 require_once __DIR__ . '/../vendor/autoload.php';
 use Thomas\PhpBlog\Config\Database;
+use Thomas\PhpBlog\Config\Response;
 use Thomas\PhpBlog\Models\PostModel;
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Controllers\PostController;
-
+use Thomas\PhpBlog\Config\Router;
 
 $pdo = Database::getConnection();
 $postModel = new PostModel($pdo);
 $imageService = new ImageService();
-
+$router = new Router();
 
 $controller = new PostController($postModel, $imageService);
-
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
-$page = $_GET['page'];
 
+$segments = explode('/', trim($uri, '/'));
+$id = filter_var($segments[1], FILTER_SANITIZE_NUMBER_INT);
 
-
-if ($page === 'create' && $method === 'GET') {
+$router->get('/create', function () use ($controller) {
     $controller->create();
-    exit;
-}
-if ($uri === '/posts/store' && $method === 'POST') {
-    $controller->store();
-    exit;
-}
-if ($uri === '/') {
-    $controller->fetch();
-    exit;
-}
-if ($uri === '/edit') {
+    Response::redirect('http://localhost:8000/create');
+
+});
+
+$router->get('/', fn() => $controller->fetch());
+
+$router->get('/edit/' . $id, fn() => $controller->edit());
+
+
+$router->post('/update/' . $id, function () use ($controller) {
     $controller->update();
-    exit;
-}
+    Response::redirect('/');
+});
 
-$routes = [
-    'home' => __DIR__ . '/../views/posts/index.php',
-    'login' => __DIR__ . '/../views/auth/login.php',
-    'register' => __DIR__ . '/../views/auth/register.php',
-    'create' => __DIR__ . '/../views/posts/create.php',
-    'viewpost' => __DIR__ . '/../views/posts/viewpost.php',
-    'edit' => __DIR__ . '/../views/posts/edit.php',
-];
+$router->post('/posts/store', function () use ($controller) {
+    $controller->store();
+    Response::redirect('/');
+});
 
-$route = $_GET['page'] ?? 'home';
 
-if (array_key_exists($route, $routes)) {
-    require $routes[$route];
-} else {
+$router->post('/create', fn() => $controller->store());
 
-    http_response_code(404);
+$action = $router->resolve($_SERVER['REQUEST_URI'], method: $_SERVER['REQUEST_METHOD']);
+$action();
 
-}
+http_response_code(404);
+echo "404 - Page Not Found";
+
+
+

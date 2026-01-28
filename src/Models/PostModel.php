@@ -47,12 +47,16 @@ class PostModel
     }
     public function update($id, array $data)
     {
-        $stmt = $this->pdo->prepare("UPDATE posts SET title = :title, content = :content WHERE id = :id");
-        return $stmt->execute([
-            ':title' => $data['title'],
-            ':content' => $data['content'],
-            ':id' => $id
-        ]);
+        $fields = [];
+        foreach ($data as $column => $value) {
+            $fields[] = "{$column} = :{$column}";
+        }
+        $setClause = implode(', ', $fields);
+        $sql = "update posts set {$setClause} where id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $data['id'] = $id;
+
+        return $stmt->execute($data);
     }
 
 

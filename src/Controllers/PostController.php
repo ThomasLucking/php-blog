@@ -28,13 +28,26 @@ class PostController
     }
     public function update()
     {
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $segments = explode('/', trim($uri, '/'));
 
-        $id = $_POST["id"];
-        $data = [
-            "title" => $_POST["title"],
-            "content" => $_POST["content"],
-        ];
-        $this->model->update($id, $data);
+        $id = filter_var($segments[1], FILTER_SANITIZE_NUMBER_INT);
+        $updateData = [];
+
+        
+        if (!empty($_POST['title'])) {
+            $updateData['title'] = $_POST['title'];
+        }
+
+        if (!empty($_POST['content'])) {
+            $updateData['content'] = $_POST['content'];
+        }
+        if (isset($_FILES['cover_photo']) && $_FILES['cover_photo']['error'] === UPLOAD_ERR_OK) {
+            $updateData['image'] = $this->imageService->handleUpload($_FILES['cover_photo']);
+        }
+
+
+        $this->model->update($id, $updateData);
         require_once __DIR__ . "/../../views/posts/edit.php";
         header("Location: /");
 
@@ -42,11 +55,15 @@ class PostController
 
     public function edit()
     {
-        $id = $_GET['id'] ?? null;
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $segments = explode('/', trim($uri, '/'));
+
+        $id = filter_var($segments[1], FILTER_SANITIZE_NUMBER_INT);
+
         $post = $this->model->findId($id);
 
         if (!$post) {
-            header("Location: /"); 
+            header("Location: /");
             exit;
         }
 
