@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 use Thomas\PhpBlog\Config\Database;
-use Thomas\PhpBlog\Config\Response;
 use Thomas\PhpBlog\Models\PostModel;
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Controllers\PostController;
@@ -19,49 +18,33 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 
 $segments = explode('/', trim($uri, '/'));
-$id = filter_var($segments[1], FILTER_SANITIZE_NUMBER_INT);
+$id = (isset($segments[1]) && is_numeric($segments[1])) ? (int) $segments[1] : null;
 
-
-
-
-$router->get('/create', function () use ($controller) {
-    $controller->create();
-});
 
 $router->get('/', fn() => $controller->fetch());
+$router->get('/create', fn() => $controller->create());
+$router->post('/posts/store', fn() => $controller->store());
 
-$router->get('/edit/' . $id, fn() => $controller->edit());
-
-
-$action = $segments[0] ?? ''; // 'update', 'edit', etc.
-$id = $segments[1] ?? null;
-
-if($id && is_numeric($id)) {
-    $router->post('/update/' . $id, function () use ($controller) {
-        $controller->update();
-        Response::redirect('/');
-    });
+if ($id) {
+    $router->get("/post/$id", fn() => $controller->fetchViaID($id));
+    $router->get("/edit/$id", fn() => $controller->edit($id));
+    $router->post("/update/$id", fn() => $controller->update($id));
 }
 
-$router->post('/posts/store', function () use ($controller) {
-    $controller->store();
-    Response::redirect('/');
-});
 
-
-$router->post('/create', fn() => $controller->store());
-
-$action = $router->resolve($_SERVER['REQUEST_URI'], method: $_SERVER['REQUEST_METHOD']);
+$action = $router->resolve($uri, $method);
 if (is_callable($action)) {
     $action();
 } else {
     http_response_code(404);
     echo "404 - Page Not Found";
     exit;
+
 }
 
-http_response_code(404);
-echo "404 - Page Not Found";
+
+
+
 
 
 

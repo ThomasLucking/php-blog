@@ -23,17 +23,17 @@
                     <img class="rounded-sm mb-4" src="/uploads/<?= $post['image'] ?>" alt="Blog Post" />
                 </a>
 
-                <a href="/index.php?page=viewpost">
+                <a href="/post/<?= $post['id'] ?>">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-white wrap-anywhere">
                         <?= $post['title'] ?>
                     </h5>
                 </a>
 
-                <p class="mb-6 text-slate-400 text-sm leading-relaxed">
+                <p class="mb-6 text-slate-400 text-sm leading-relaxed wrap-anywhere">
                     <?= $post['content'] ?>
                 </p>
                 <div class="flex justify-start gap-3">
-                    <a href="/index.php?page=viewpost"
+                    <a href="/post/<?= $post['id'] ?>"
                         class="inline-flex items-center bg-[#60a5fa] text-white px-5 py-2.5 rounded font-semibold transition hover:bg-blue-500">
                         See post
                     </a>
