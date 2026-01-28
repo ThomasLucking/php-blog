@@ -17,7 +17,6 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $segments = explode('/', trim($uri, '/'));
 $id = (isset($segments[1]) && is_numeric($segments[1])) ? (int) $segments[1] : null;
 
@@ -36,12 +35,13 @@ if ($id) {
 $action = $router->resolve($uri, $method);
 if (is_callable($action)) {
     $action();
+} else {
+    http_response_code(404);
+    echo "404 - Page Not Found";
+    exit;
+
 }
 
-
-http_response_code(404);
-echo "404 - Page Not Found";
-exit;
 
 
 

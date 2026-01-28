@@ -56,6 +56,7 @@ class PostController
         $post = $this->model->findId($id);
 
         if (!$post) {
+            http_response_code(404);
             require_once __DIR__ . "/../../views/404.php";
             return;
         }
@@ -74,21 +75,27 @@ class PostController
 
 
         $filteredData = filter_input_array(INPUT_POST, [
-            "title"=> FILTER_SANITIZE_SPECIAL_CHARS,
-            "content"=> FILTER_SANITIZE_SPECIAL_CHARS,
+            "title" => FILTER_SANITIZE_SPECIAL_CHARS,
+            "content" => FILTER_SANITIZE_SPECIAL_CHARS,
         ]);
 
         $imagePath = $this->imageService->handleUpload($_FILES['cover_photo'] ?? null);
 
-        if (!$imagePath) {
-            $error["cover_photo"] = 'image is required';
-
+        if (!$filteredData['title']) {
+            $error['title'] = "Title is required.";
         }
-        !$filteredData['title'] ? $error['content'] = "title is required": $error[] = "";
-        !$filteredData["content"] ? $error["content"] = "content is required": $error[] = "";
-        !$imagePath ? $error["cover_photo"] = "image is required": $error[] = "";
 
-        !empty($error) && Redirector::redirect("/create");
+        if (!$filteredData['content']) {
+            $error['content'] = "Content is required.";
+        }
+
+        if (!$imagePath) {
+            $error['cover_photo'] = "Image is required.";
+        }
+
+        if (!empty($error)) {
+            Redirector::redirect("/create");
+        }
 
         $postData = [
             "title" => $filteredData["title"],
