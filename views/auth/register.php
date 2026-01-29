@@ -1,8 +1,11 @@
-<?php require_once __DIR__ . '/../partials/header.php'; ?>
+<?php require_once __DIR__ . '/../partials/header.php'; 
+
+use Thomas\PhpBlog\Config\Flash;?>
 <?php require_once __DIR__ . '/../partials/navbar.php'; ?>
 
 <?php
-$errors = $errors ?? [];
+
+$errors = Flash::getValueAndDelete('errors') ?? [];
 
 
 if (isset($errors['password'])) {
@@ -11,7 +14,6 @@ if (isset($errors['password'])) {
     $inputColors = 'border-[#1e293b] bg-slate-800 text-white placeholder:text-slate-500';
 }
 ?>
-
 
 <main class="grow flex items-center justify-center">
     <div class="w-full max-w-sm p-6 border-2 rounded-md border-[#1e293b] bg-[#0f172a] shadow-xl">
@@ -65,7 +67,7 @@ if (isset($errors['password'])) {
             </button>
 
             <div class="text-sm font-medium text-slate-400">
-                Already Registered? <a href="/index.php?page=login" class="text-[#60a5fa] hover:underline">Login</a>
+                Already Registered? <a href="/login" class="text-[#60a5fa] hover:underline">Login</a>
             </div>
         </form>
     </div>
