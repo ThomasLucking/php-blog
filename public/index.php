@@ -49,7 +49,8 @@ $router->get("/register", fn() => $userController->create());
 $router->post('/users/store', fn() => $userController->storeUser());
 $router->get('/login', fn() => $userController->login()); // shows the form
 $router->post('/login', fn() => $userController->loginAuth()); // handle login
-// soon handle logout
+$router->post('/logout', fn() => $userController->logout()); // handles logout
+
 
 
 $action = $router->resolve($uri, $method);

@@ -12,7 +12,7 @@
         <div>
 
         </div>
-                <?php if (AuthController::isLoggedin()): ?>
+        <?php if (AuthController::isLoggedin()): ?>
             <span class="text-slate-400 text-sm italic"><?= htmlspecialchars($_SESSION["name"]) ?></span>
 
             <form action="/logout" method="POST" class="inline">
@@ -33,9 +33,6 @@
                 <a class="font-semibold" href="/">All posts</a>
             </div>
         <?php endif; ?>
-        <a href="/register" class="inline-block bg-[#60a5fa] text-white px-4 py-2 rounded font-bold">
-                Create Account
-            </a>
 
     </div>
 </nav>

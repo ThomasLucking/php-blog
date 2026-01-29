@@ -108,6 +108,15 @@ class AuthController
 
     }
 
+    public function logout()
+    {
+        $_SESSION = [];
+        session_destroy();
+        Redirector::redirect('/');
+        exit;
+
+    }
+
     public static function isLoggedin()
     {
         return isset($_SESSION['user_id']) && session_status() === PHP_SESSION_ACTIVE;
