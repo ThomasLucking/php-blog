@@ -3,7 +3,7 @@
 namespace Thomas\PhpBlog\Controllers;
 use Thomas\PhpBlog\Models\UserModel;
 use Thomas\PhpBlog\Services\AuthService;
-use Thomas\PhpBlog\Config\Direct as Redirector;
+use Thomas\PhpBlog\Config\Redirector as Redirector;
 
 
 class AuthController
@@ -56,7 +56,7 @@ class AuthController
     }
 
     if ($rawPassword) {
-        $checkPassword = $this->authService->PasswwordSecurityCheck($rawPassword);
+        $checkPassword = $this->authService->PasswordSecurityCheck($rawPassword);
         if (!$checkPassword) {
             $errors['password'] = "Password must be at least 8 chars with Uppercase, Lowercase, Number, and Special char.";
         }
@@ -73,7 +73,7 @@ class AuthController
 
 
     $hashedPassword = $this->authService->hashPassword($rawPassword);
-    $this->model->StoreUser([
+    $this->model->storeUser([
         "name" => $UserData["name"],
         "email" => $UserData["email"],
         "password" => $hashedPassword,

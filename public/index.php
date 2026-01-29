@@ -16,13 +16,11 @@ $pdo = Database::getConnection();
 $postModel = new PostModel($pdo);
 $imageService = new ImageService();
 
-
 $userModel = new UserModel($pdo);
 $authService = new AuthService();
-
+$userController = new AuthController($userModel, $authService);
 
 $controller = new PostController($postModel, $imageService);
-$userController = new AuthController($userModel, $authService);
 
 
 $router = new Router();

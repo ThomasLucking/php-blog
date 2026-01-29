@@ -12,11 +12,6 @@ class UserModel
     {
     }
 
-    public function create()
-    {
-        require_once __DIR__ . "/../../views/posts/register.php";
-    }
-
 
 
     public function findByEmail(string $email): array|false
@@ -27,7 +22,7 @@ class UserModel
     }
 
 
-    public function StoreUser(array $data)
+    public function storeUser(array $data)
     {
 
         try {
