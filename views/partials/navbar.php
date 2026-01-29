@@ -13,8 +13,8 @@
             <div class="flex items-center space-x-4 mr-4 text-white">
                 <a class="font-semibold" href="/create">Create post</a>
                 <a class="font-semibold" href="/">All posts</a>
-                <a href="/register" class="inline-block bg-[#60a5fa] text-white px-4 py-2 rounded">
-                    Create Account
+                <a href="/login" class="inline-block bg-[#60a5fa] text-white px-4 py-2 rounded">
+                    Login
                 </a>
             </div>
 

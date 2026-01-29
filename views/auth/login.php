@@ -3,7 +3,7 @@
 
 <main class="grow flex items-center justify-center">
     <div class="w-full max-w-sm p-6 border-2 rounded-md border-slate-800 bg-slate-900 shadow-xl">
-        <form action="/login" method="POST">
+        <form action="#">
             <h5 class="text-xl font-bold text-white mb-6">Sign in to our platform</h5>
             <div class="mb-4">
                 <label for="name" class="block mb-2 text-sm font-medium text-white">Your username</label>

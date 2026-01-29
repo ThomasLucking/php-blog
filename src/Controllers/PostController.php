@@ -4,7 +4,7 @@ namespace Thomas\PhpBlog\Controllers;
 
 use Thomas\PhpBlog\Models\PostModel;
 use Thomas\PhpBlog\Services\ImageService;
-use Thomas\PhpBlog\Config\Direct as Redirector;
+use Thomas\PhpBlog\Config\Response as Redirector;
 class PostController
 {
     public function __construct(
