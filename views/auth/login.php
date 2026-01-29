@@ -19,17 +19,6 @@ if (isset($errors['password'])) {
     <div class="w-full max-w-sm p-6 border-2 rounded-md border-slate-800 bg-slate-900 shadow-xl">
         <form action="/login" method="POST">
             <h5 class="text-xl font-bold text-white mb-6">Sign in to our platform</h5>
-            <?php if (isset($errors['login'])): ?>
-                <p class="text-2xs text-red-400">
-                    <span class="font-medium">Error</span> <?= htmlspecialchars($errors['login']) ?>
-                </p>
-            <?php endif; ?>
-            <div class="mb-4">
-                <label for="name" class="block mb-2 text-sm font-medium text-white">Your username</label>
-                <input type="text" id="name" name="name"
-                    class="bg-slate-800 border border-[#1e293b] text-white text-sm rounded-md focus:ring-[#60a5fa] focus:border-[#60a5fa] block w-full px-3 py-2.5 placeholder:text-slate-500 outline-none"
-                    placeholder="example@company.com" required />
-            </div>
             <?php if (isset($errors['email'])): ?>
                 <p class="text-2xs text-red-400">
                     <span class="font-medium">Error</span> <?= htmlspecialchars($errors['email']) ?>

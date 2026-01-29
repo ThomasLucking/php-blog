@@ -18,7 +18,7 @@ class AuthController
 
     public function create()
     {
-        $errors = Flash::getValue('errors') ?? [];
+        // $errors = Flash::getValue('errors') ?? [];
         require_once __DIR__ . "/../../views/auth/register.php";
     }
 
@@ -88,10 +88,11 @@ class AuthController
     public function loginAuth()
     {
         $rawPassword = $_POST['password'] ?? null;
-        $userEmail = $_POST['email'] ?? null;
+        $userEmail = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $user = $this->model->findByEmail($userEmail);
 
         if ($user && password_verify($rawPassword, $user['password'])) {
+            session_regenerate_id(true);
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
@@ -100,21 +101,16 @@ class AuthController
             exit;
 
         } else {
-            Flash::setValue('errors',['login' => 'invalid email or password']);
+            Flash::setValue('errors', ['login' => 'invalid email or password']);
             Redirector::redirect('/login');
             exit;
         }
 
     }
 
-    public static function isLoggedin(){
-        if(isset($_SESSION['user_id']) && session_status() === PHP_SESSION_ACTIVE) {
-            return $_SESSION['name'];
-
-        }else{
-            Redirector::redirect('/');
-            exit;
-        }
+    public static function isLoggedin()
+    {
+        return isset($_SESSION['user_id']) && session_status() === PHP_SESSION_ACTIVE;
     }
 }
 
