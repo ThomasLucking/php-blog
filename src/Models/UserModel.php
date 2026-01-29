@@ -16,10 +16,11 @@ class UserModel
 
     public function findByEmail(string $email): array|false
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
+        $stmt = $this->pdo->prepare("select * from users where email = :email limit 1");
         $stmt->execute(['email' => $email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 
 
     public function storeUser(array $data)

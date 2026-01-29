@@ -8,6 +8,7 @@ class AuthService
 
     public function PasswordSecurityCheck(string $password)
     {
+            // https://regexr.com/8jgjh
             $password_pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/';
             $passwordMatch = preg_match($password_pattern, $password);
 
