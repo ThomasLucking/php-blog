@@ -12,7 +12,7 @@
         <div>
 
         </div>
-        <?php if (AuthController::isLoggedin()): ?>
+                <?php if (AuthController::isLoggedin()): ?>
             <span class="text-slate-400 text-sm italic"><?= htmlspecialchars($_SESSION["name"]) ?></span>
 
             <form action="/logout" method="POST" class="inline">
@@ -20,15 +20,22 @@
                     Logout
                 </button>
             </form>
+            <div class="flex items-center space-x-4 mr-4 text-white">
+                <a class="font-semibold" href="/create">Create post</a>
+                <a class="font-semibold" href="/">All posts</a>
+            </div>
         <?php else: ?>
             <a href="/register" class="inline-block bg-[#60a5fa] text-white px-4 py-2 rounded font-bold">
                 Create Account
             </a>
+            <div class="flex items-center space-x-4 mr-4 text-white">
+                <a class="font-semibold" href="/create">Create post</a>
+                <a class="font-semibold" href="/">All posts</a>
+            </div>
         <?php endif; ?>
-        <div class="flex items-center space-x-4 mr-4 text-white">
-            <a class="font-semibold" href="/create">Create post</a>
-            <a class="font-semibold" href="/">All posts</a>
-        </div>
+        <a href="/register" class="inline-block bg-[#60a5fa] text-white px-4 py-2 rounded font-bold">
+                Create Account
+            </a>
 
     </div>
 </nav>
