@@ -10,6 +10,7 @@ use Thomas\PhpBlog\Models\UserModel;
 
 use Thomas\PhpBlog\Config\Router;
 
+session_start();
 $pdo = Database::getConnection();
 
 $postModel = new PostModel($pdo);
@@ -33,7 +34,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $segments = explode('/', trim($uri, '/'));
 $id = (isset($segments[1]) && is_numeric($segments[1])) ? (int) $segments[1] : null;
 
-// posts routes
+// Post routes
 $router->get('/', action: fn() => $controller->fetch());
 $router->get('/create', fn() => $controller->create());
 $router->post('/posts/store', fn() => $controller->store());

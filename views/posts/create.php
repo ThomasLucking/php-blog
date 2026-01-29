@@ -8,7 +8,7 @@ $error = $error ?? [];
 
 
 if (isset($error['cover_photo'])) {
-    $inputColors = 'border-red-400 bg-red-900/20 text-red-400 placeholder:text-red-300';
+    $inputColors = 'border-red-400 bg-red-900/20 text-red-400 placeholder:text2-red-300';
 } else {
     $inputColors = 'border-[#1e293b] bg-slate-800 text-white placeholder:text-slate-500';
 }
