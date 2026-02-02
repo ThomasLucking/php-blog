@@ -2,6 +2,10 @@
 <?php require_once __DIR__ . '/../partials/navbar.php'; ?>
 
 
+<?php use \Thomas\PhpBlog\Services\Authorization ?>
+
+
+
 <main class="grow p-10 flex-col items-start justify-start text-left">
     <div class="flex flex-col gap-y-6 items-start justify-between mr-6">
         <h1 class="text-white text-4xl font-bold">Welcome to the Blog</h1>
@@ -32,18 +36,21 @@
                 <p class="mb-6 text-slate-400 text-sm leading-relaxed wrap-anywhere">
                     <?= $post['content'] ?>
                 </p>
+
                 <div class="flex justify-start gap-3">
                     <a href="/post/<?= $post['id'] ?>"
                         class="inline-flex items-center bg-[#60a5fa] text-white px-5 py-2.5 rounded font-semibold transition hover:bg-blue-500">
                         See post
                     </a>
+                
+                <?php if (Authorization::isLoggedIn() && Authorization::canAccessPost($post['id'])): ?>
                     <a href="/edit/<?= $post['id'] ?>">
                         <img class="w-10 h-10 ml-5" src="/assets/Gear.png" alt="Edit">
                     </a>
-                </div>
-
+                <?php endif; ?>
             </div>
-        <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
     </div>
 </main>
 

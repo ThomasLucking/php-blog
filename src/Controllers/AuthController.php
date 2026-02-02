@@ -6,7 +6,6 @@ use Thomas\PhpBlog\Models\UserModel;
 use Thomas\PhpBlog\Services\AuthService;
 use Thomas\PhpBlog\Config\Redirector;
 
-
 class AuthController
 {
     public function __construct(
@@ -15,6 +14,7 @@ class AuthController
 
     ) {
     }
+    
 
     public function create()
     {
@@ -108,9 +108,15 @@ class AuthController
 
     }
 
-    public static function isLoggedin()
+    public function logout()
     {
-        return isset($_SESSION['user_id']) && session_status() === PHP_SESSION_ACTIVE;
+        $_SESSION = [];
+        session_destroy();
+        Redirector::redirect('/');
+        exit;
+
     }
+
+
 }
 
