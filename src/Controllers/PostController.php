@@ -3,27 +3,33 @@
 namespace Thomas\PhpBlog\Controllers;
 
 use Thomas\PhpBlog\Models\PostModel;
+
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Config\Redirector as Redirector;
+use Thomas\PhpBlog\Controllers\Middleware;
 class PostController
 {
     public function __construct(
         private PostModel $model,
         private ImageService $imageService,
+        
 
     ) {
     }
+    
 
     public function create()
     {
         require_once __DIR__ . "/../../views/posts/create.php";
     }
+    
     public function fetch()
     {
         $posts = $this->model->fetchall();
         require_once __DIR__ . "/../../views/posts/index.php";
 
     }
+    
     public function update(int $id)
     {
         $updateData = filter_input_array(INPUT_POST, [
@@ -61,6 +67,7 @@ class PostController
             return;
         }
 
+
         require_once __DIR__ . "/../../views/posts/viewpost.php";
     }
 
@@ -73,13 +80,16 @@ class PostController
 
         }
 
-
         $filteredData = filter_input_array(INPUT_POST, [
             "title" => FILTER_SANITIZE_SPECIAL_CHARS,
             "content" => FILTER_SANITIZE_SPECIAL_CHARS,
         ]);
 
+
         $imagePath = $this->imageService->handleUpload($_FILES['cover_photo'] ?? null);
+
+        $userid = $_SESSION['user_id'];
+
 
         if (!$filteredData['title']) {
             $error['title'] = "Title is required.";
@@ -101,7 +111,7 @@ class PostController
             "title" => $filteredData["title"],
             "content" => $filteredData["content"],
             "image" => $imagePath,
-            "user_id" => 1,
+            "user_id" => $userid ,
 
         ];
 
@@ -109,6 +119,8 @@ class PostController
         Redirector::redirect("/");
 
     }
+
+    
 
 }
 

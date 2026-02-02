@@ -7,7 +7,7 @@ use Thomas\PhpBlog\Controllers\PostController;
 use Thomas\PhpBlog\Controllers\AuthController;
 use Thomas\PhpBlog\Services\AuthService;
 use Thomas\PhpBlog\Models\UserModel;
-
+use Thomas\PhpBlog\Middleware\Middleware;
 use Thomas\PhpBlog\Config\Router;
 
 session_start();
@@ -34,12 +34,15 @@ $id = (isset($segments[1]) && is_numeric($segments[1])) ? (int) $segments[1] : n
 
 // Post routes
 $router->get('/', action: fn() => $controller->fetch());
-$router->get('/create', fn() => $controller->create());
-$router->post('/posts/store', fn() => $controller->store());
+$router->get('/create', fn() => $controller->create())
+    ->middleware(Middleware::class);
+
+$router->post('/posts/store', action: fn() => $controller->store());
 
 if ($id) {
     $router->get("/post/$id", fn() => $controller->fetchViaID($id));
-    $router->get("/edit/$id", fn() => $controller->edit($id));
+    $router->get("/edit/$id", fn() => $controller->edit($id))
+        ->middleware(Middleware::class);
     $router->post("/update/$id", fn() => $controller->update($id));
 }
 
@@ -58,6 +61,7 @@ if (is_callable($action)) {
     $action();
 } else {
     http_response_code(404);
+    require_once __DIR__ .'../views/404.php';
     echo "404 - Page Not Found";
     exit;
 

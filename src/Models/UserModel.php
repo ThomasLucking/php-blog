@@ -36,4 +36,21 @@ class UserModel
 
         }
     }
+
+    public function linkUserWithPost(int $userId, int $postId): bool
+    {
+        try {
+
+            $sql = 'select 1 from posts where id = ? and user_id = ? limit 1';
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$postId, $userId]);
+
+
+            return (bool) $stmt->fetch();
+
+        } catch (\PDOException $e) {
+            throw new \Exception('Database authorization check failed.', 0, $e);
+        }
+    }
 }

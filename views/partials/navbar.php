@@ -1,4 +1,4 @@
-<?php use \Thomas\PhpBlog\Controllers\AuthController ?>
+<?php use \Thomas\PhpBlog\Services\Authorization; ?>
 
 
 <nav class="mt-6 px-6">
@@ -12,7 +12,7 @@
         <div>
 
         </div>
-        <?php if (AuthController::isLoggedin()): ?>
+        <?php if (Authorization::isLoggedin()): ?>
             <span class="text-slate-400 text-sm italic"><?= htmlspecialchars($_SESSION["name"]) ?></span>
 
             <form action="/logout" method="POST" class="inline">
@@ -29,7 +29,6 @@
                 Create Account
             </a>
             <div class="flex items-center space-x-4 mr-4 text-white">
-                <a class="font-semibold" href="/create">Create post</a>
                 <a class="font-semibold" href="/">All posts</a>
             </div>
         <?php endif; ?>
