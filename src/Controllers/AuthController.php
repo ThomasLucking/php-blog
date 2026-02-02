@@ -14,7 +14,7 @@ class AuthController
 
     ) {
     }
-    
+
 
     public function create()
     {
@@ -111,7 +111,9 @@ class AuthController
     public function logout()
     {
         $_SESSION = [];
+        setcookie(session_name(), "", time() - 3600);
         session_destroy();
+        session_write_close();
         Redirector::redirect('/');
         exit;
 
