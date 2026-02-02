@@ -6,7 +6,7 @@ use Thomas\PhpBlog\Models\PostModel;
 
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Config\Redirector as Redirector;
-use Thomas\PhpBlog\Controllers\Middleware;
+
 class PostController
 {
     public function __construct(

@@ -9,11 +9,6 @@ use Thomas\PhpBlog\Config\Database;
 class Authorization
 {
 
-    public function __construct(
-
-
-    ) {
-    }
     public static function isLoggedIn(): bool
     {
         return isset($_SESSION['user_id']) && session_status() === PHP_SESSION_ACTIVE;
@@ -24,16 +19,13 @@ class Authorization
     //     return self::isLoggedIn() ? (int)$_SESSION['user_id'] : null;
     // }
 
-    public static function canAccessPost(int $postId): bool
+    public static function canAccessPost(int $postId, UserModel $model): bool
     {
         if (!self::isLoggedIn()) {
             return false;
         }
 
         $userId = (int)$_SESSION['user_id'];
-        
-        $pdo = Database::getConnection();
-        $model = new UserModel($pdo);
         return $model->linkUserWithPost($userId, $postId);
     }
 }

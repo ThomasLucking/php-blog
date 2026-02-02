@@ -15,8 +15,6 @@ class AuthController
     ) {
     }
     
-    private static $instance;
-
 
     public function create()
     {

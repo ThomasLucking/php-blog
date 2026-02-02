@@ -37,6 +37,9 @@ class Router
 
     public function middleware(string $middlewareClass): self
     {
+        if ($this->lastMethod === null || $this->lastUri === null) {
+            throw new \LogicException('Cannot add middleware without a route being defined first.');
+        }
         $this->routes[$this->lastMethod][$this->lastUri]['middlewares'][] = $middlewareClass;
 
         return $this;
@@ -47,15 +50,17 @@ class Router
         $route = $this->routes[$method][$uri] ?? null;
 
         if ($route) {
-           
+
             foreach ($route['middlewares'] as $middlewareClass) {
-                if ($middlewareClass === Middleware::class) {
-                    $middleware = new Middleware();
-                    $middleware->handle();
+                if (class_exists($middlewareClass)) {
+                    $middleware = new $middlewareClass();
+                    if (method_exists($middleware, 'handle')) {
+                        $middleware->handle();
+                    }
                 }
             }
 
-     
+
             return $route['action'];
         }
 
