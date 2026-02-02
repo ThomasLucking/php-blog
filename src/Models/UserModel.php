@@ -13,7 +13,7 @@ class UserModel
     }
 
 
-
+    
     public function findByEmail(string $email): array|false
     {
         $stmt = $this->pdo->prepare("select * from users where email = :email limit 1");
@@ -22,12 +22,11 @@ class UserModel
     }
 
 
-
     public function storeUser(array $data)
     {
 
         try {
-            $stmt = $this->pdo->prepare("insert into users (name, email, password) values (:name, :email, :password)");
+            $stmt = $this->pdo->prepare("insert into users (name, email, password, role) values (:name, :email, :password, :role)");
             $stmt->execute($data);
             return true;
         } catch (\PDOException $e) {
