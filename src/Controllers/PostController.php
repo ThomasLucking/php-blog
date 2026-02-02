@@ -116,15 +116,7 @@ class PostController
 
         ];
 
-        if (!$postData) {
-            Flash::setValue("notification", [
-                "type" => "danger",
-                "message" => "Something went wrong, please try again."
-            ]);
-
-            Redirector::redirect('/create-post');
-            exit;
-        }
+        
 
         Flash::setValue("notification", [
             "type" => "success",
@@ -133,7 +125,7 @@ class PostController
 
         $this->model->create($postData);
         Redirector::redirect("/");
-        exit;
+      
 
     }
 

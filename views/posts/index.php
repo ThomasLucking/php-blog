@@ -19,18 +19,6 @@
             <span class="block sm:inline"><?= htmlspecialchars($flash['message'] ?? '') ?></span>
         </div>
     <?php endif; ?>
-    
-    <?php if ($flash = Flash::getValueAndDelete('LoginSuccess')):
-        $isDanger = ($flash['type'] ?? 'success') === 'danger';
-        $bgClass = $isDanger ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700';
-        ?>
-        <div class="px-4 py-3 mb-4 border rounded relative <?= $bgClass ?>" role="alert">
-            <strong class="font-bold">
-                <?= $isDanger ? 'Whoops!' : 'Success!' ?>
-            </strong>
-            <span class="block sm:inline"><?= htmlspecialchars($flash['message'] ?? '') ?></span>
-        </div>
-    <?php endif; ?>
     <div class="flex flex-col gap-y-6 items-start justify-between mr-6">
         <h1 class="text-white text-4xl font-bold">Welcome to the Blog</h1>
         <p class="text-white text-2xs">
