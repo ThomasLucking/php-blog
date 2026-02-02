@@ -4,9 +4,33 @@
 
 <?php use \Thomas\PhpBlog\Services\Authorization ?>
 
+<?php use \Thomas\PhpBlog\Config\Flash ?>
 
 
 <main class="grow p-10 flex-col items-start justify-start text-left">
+    <?php if ($flash = Flash::getValueAndDelete('notification')):
+        $isDanger = ($flash['type'] ?? 'success') === 'danger';
+        $bgClass = $isDanger ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700';
+        ?>
+        <div class="px-4 py-3 mb-4 border rounded relative <?= $bgClass ?>" role="alert">
+            <strong class="font-bold">
+                <?= $isDanger ? 'Whoops!' : 'Success!' ?>
+            </strong>
+            <span class="block sm:inline"><?= htmlspecialchars($flash['message'] ?? '') ?></span>
+        </div>
+    <?php endif; ?>
+    
+    <?php if ($flash = Flash::getValueAndDelete('LoginSuccess')):
+        $isDanger = ($flash['type'] ?? 'success') === 'danger';
+        $bgClass = $isDanger ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700';
+        ?>
+        <div class="px-4 py-3 mb-4 border rounded relative <?= $bgClass ?>" role="alert">
+            <strong class="font-bold">
+                <?= $isDanger ? 'Whoops!' : 'Success!' ?>
+            </strong>
+            <span class="block sm:inline"><?= htmlspecialchars($flash['message'] ?? '') ?></span>
+        </div>
+    <?php endif; ?>
     <div class="flex flex-col gap-y-6 items-start justify-between mr-6">
         <h1 class="text-white text-4xl font-bold">Welcome to the Blog</h1>
         <p class="text-white text-2xs">
@@ -42,15 +66,15 @@
                         class="inline-flex items-center bg-[#60a5fa] text-white px-5 py-2.5 rounded font-semibold transition hover:bg-blue-500">
                         See post
                     </a>
-                
-                <?php if (Authorization::isLoggedIn() && Authorization::canAccessPost($post['id'])): ?>
-                    <a href="/edit/<?= $post['id'] ?>">
-                        <img class="w-10 h-10 ml-5" src="/assets/Gear.png" alt="Edit">
-                    </a>
-                <?php endif; ?>
+
+                    <?php if (Authorization::isLoggedIn() && Authorization::canAccessPost($post['id'])): ?>
+                        <a href="/edit/<?= $post['id'] ?>">
+                            <img class="w-10 h-10 ml-5" src="/assets/Gear.png" alt="Edit">
+                        </a>
+                    <?php endif; ?>
+                </div>
             </div>
-        </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
     </div>
 </main>
 

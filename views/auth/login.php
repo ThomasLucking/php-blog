@@ -17,6 +17,19 @@ if (isset($errors['password'])) {
 
 <main class="grow flex items-center justify-center">
     <div class="w-full max-w-sm p-6 border-2 rounded-md border-slate-800 bg-slate-900 shadow-xl">
+        <?php if ($flash = Flash::getValueAndDelete('notification')):
+            $isDanger = ($flash['type'] ?? 'success') === 'danger';
+            $bgClass = $isDanger ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700';
+            ?>
+            <div class="px-4 py-3 mb-4 border rounded relative <?= $bgClass ?>" role="alert">
+                <strong class="font-bold">
+                    <?= $isDanger ? 'Whoops!' : 'Success!' ?>
+                </strong>
+                <span class="block sm:inline">
+                    <?= htmlspecialchars($flash['message'] ?? '') ?>
+                </span>
+            </div>
+        <?php endif; ?>
         <form action="/login" method="POST">
             <h5 class="text-xl font-bold text-white mb-6">Sign in to our platform</h5>
             <?php if (isset($errors['email'])): ?>

@@ -74,11 +74,18 @@ class AuthController
         }
 
 
+
+
         $hashedPassword = $this->authService->hashPassword($rawPassword);
         $this->model->storeUser([
             "name" => $UserData["name"],
             "email" => $UserData["email"],
             "password" => $hashedPassword,
+        ]);
+
+        Flash::setValue("notification", [
+            "type" => "success",
+            "message" => "Account created successfully"
         ]);
 
         Redirector::redirect("/login");
@@ -97,6 +104,10 @@ class AuthController
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
 
+            Flash::setValue("LoginSuccess", [
+                "type" => "success",
+                "message" => "Logged in successfully"
+            ]);
             Redirector::redirect('/');
             exit;
 
@@ -111,9 +122,9 @@ class AuthController
     public function logout()
     {
         $_SESSION = [];
-        setcookie(session_name(), "", time() - 3600);
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         session_destroy();
-        session_write_close();
         Redirector::redirect('/');
         exit;
 

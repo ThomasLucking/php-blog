@@ -8,12 +8,6 @@ class Flash{
         $_SESSION[$key] = $value;
     }
 
-    static public function getValue($key){
-        if(isset($_SESSION[$key])){
-            return $_SESSION[$key];
-        }
-    }
-
     static public function getValueAndDelete($key){
         if(isset($_SESSION[$key])){
             $tempVar = $_SESSION[$key];
