@@ -117,7 +117,6 @@ class PostController
         ];
 
         
-
         Flash::setValue("notification", [
             "type" => "success",
             "message" => "Successfully created post!"

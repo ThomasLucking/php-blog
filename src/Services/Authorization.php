@@ -15,26 +15,34 @@ class Authorization
         return isset($_SESSION['user_id']) && session_status() === PHP_SESSION_ACTIVE;
     }
 
+    public static function isLoggedInAsAdmin()
+    {
+        return self::isLoggedIn() && ($_SESSION['user_role'] ?? '') === 'admin';
+    }
+
+
     // public static function getUserId(): ?int
     // {
     //     return self::isLoggedIn() ? (int)$_SESSION['user_id'] : null;
     // }
 
-    private static function getUserModel(): UserModel {
+    private static function getUserModel(): UserModel
+    {
         if (self::$userModel === null) {
             self::$userModel = new UserModel(Database::getConnection());
         }
         return self::$userModel;
     }
-    
-    public static function canAccessPost(int $postId): bool {
+
+    public static function canAccessPost(int $postId): bool
+    {
         if (!self::isLoggedIn()) {
             return false;
         }
-        
-        $userId = (int)$_SESSION['user_id'];
+
+        $userId = (int) $_SESSION['user_id'];
         return self::getUserModel()->linkUserWithPost($userId, $postId);
     }
-    
-    
+
+
 }

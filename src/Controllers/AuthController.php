@@ -75,11 +75,12 @@ class AuthController
 
 
 
-        $hashedPassword = $this->authService->hashPassword($rawPassword);
+        $hashedPassword = $this->authService->hashPassword(password: $rawPassword);
         $this->model->storeUser([
             "name" => $UserData["name"],
             "email" => $UserData["email"],
             "password" => $hashedPassword,
+            "role" => 'user'
         ]);
 
         Flash::setValue("notification", [
@@ -102,6 +103,8 @@ class AuthController
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
+
+            $_SESSION['user_role'] = $user['role'];
 
             Flash::setValue("notification", [
                 "type" => "success",
