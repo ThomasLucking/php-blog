@@ -15,15 +15,11 @@ class Authorization
         return isset($_SESSION['user_id']) && session_status() === PHP_SESSION_ACTIVE;
     }
 
-    public static function isLoggedinAsadmin()
+    public static function isLoggedInAsAdmin()
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            return false;
-        }
-
-        return isset($_SESSION['user_id']) && ($_SESSION['user_role'] ?? '') === 'admin';
-
+        return self::isLoggedIn() && ($_SESSION['user_role'] ?? '') === 'admin';
     }
+
 
     // public static function getUserId(): ?int
     // {

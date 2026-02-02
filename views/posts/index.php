@@ -55,7 +55,7 @@
                         See post
                     </a>
 
-                    <?php if (Authorization::isLoggedIn() && Authorization::canAccessPost($post['id']) || Authorization::isLoggedinAsadmin()): ?>
+                    <?php if (Authorization::canAccessPost($post['id']) || Authorization::isLoggedinAsadmin()): ?>
                         <a href="/edit/<?= $post['id'] ?>">
                             <img class="w-10 h-10 ml-5" src="/assets/Gear.png" alt="Edit">
                         </a>
