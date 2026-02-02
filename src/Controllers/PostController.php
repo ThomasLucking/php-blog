@@ -2,6 +2,7 @@
 
 namespace Thomas\PhpBlog\Controllers;
 
+use Thomas\PhpBlog\Config\Flash;
 use Thomas\PhpBlog\Models\PostModel;
 
 use Thomas\PhpBlog\Services\ImageService;
@@ -12,24 +13,24 @@ class PostController
     public function __construct(
         private PostModel $model,
         private ImageService $imageService,
-        
+
 
     ) {
     }
-    
+
 
     public function create()
     {
         require_once __DIR__ . "/../../views/posts/create.php";
     }
-    
+
     public function fetch()
     {
         $posts = $this->model->fetchall();
         require_once __DIR__ . "/../../views/posts/index.php";
 
     }
-    
+
     public function update(int $id)
     {
         $updateData = filter_input_array(INPUT_POST, [
@@ -111,16 +112,24 @@ class PostController
             "title" => $filteredData["title"],
             "content" => $filteredData["content"],
             "image" => $imagePath,
-            "user_id" => $userid ,
+            "user_id" => $userid,
 
         ];
 
+        
+
+        Flash::setValue("notification", [
+            "type" => "success",
+            "message" => "Successfully created post!"
+        ]);
+
         $this->model->create($postData);
         Redirector::redirect("/");
+      
 
     }
 
-    
+
 
 }
 
