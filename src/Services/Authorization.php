@@ -8,6 +8,7 @@ use Thomas\PhpBlog\Config\Database;
 
 class Authorization
 {
+    private static ?UserModel $userModel = null;
 
     public static function isLoggedIn(): bool
     {
@@ -19,15 +20,21 @@ class Authorization
     //     return self::isLoggedIn() ? (int)$_SESSION['user_id'] : null;
     // }
 
-    public static function canAccessPost(int $postId): bool
-    {
+    private static function getUserModel(): UserModel {
+        if (self::$userModel === null) {
+            self::$userModel = new UserModel(Database::getConnection());
+        }
+        return self::$userModel;
+    }
+    
+    public static function canAccessPost(int $postId): bool {
         if (!self::isLoggedIn()) {
             return false;
         }
-        $pdo = Database::getConnection();
-        $model = new UserModel($pdo);
-
+        
         $userId = (int)$_SESSION['user_id'];
-        return $model->linkUserWithPost($userId, $postId);
+        return self::getUserModel()->linkUserWithPost($userId, $postId);
     }
+    
+    
 }
