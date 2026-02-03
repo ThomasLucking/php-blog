@@ -111,7 +111,7 @@ class AuthController
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
-            $_SESSION['email'] = $userEmail;
+            $_SESSION['user_email'] = $userEmail;
 
             $_SESSION['user_role'] = $user['role'];
 
@@ -192,7 +192,7 @@ class AuthController
         $this->model->updateUser($id, $updateData);
 
 
-        $_SESSION['user_email'] = $updateData['email'];
+        $_SESSION['email'] = $updateData['email'];
         $_SESSION['name'] = $updateData['name'];
 
         Flash::setValue("notification", ["type" => "success", "message" => "Profile updated!"]);

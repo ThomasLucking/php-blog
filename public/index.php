@@ -22,7 +22,7 @@ $authService = new AuthService();
 $userController = new AuthController($userModel, $authService);
 
 $controller = new PostController($postModel, $imageService);
-$userID = Authorization::getUserId();
+
 
 $router = new Router();
 

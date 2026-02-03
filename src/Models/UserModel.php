@@ -63,7 +63,7 @@ class UserModel
 
 
 
-    public function updateUser($id, array $data)
+    public function updateUser(int $id, array $data)
     {
         if (empty($data)) {
             return false;

@@ -39,7 +39,7 @@ $getInputClass = function($fieldName) use ($errors) {
                 <input type="email" id="Edit_email" name="Edit_email"
                     class="<?= $getInputClass('Edit_email') ?>"
                     placeholder="example@company.com" 
-                    value="<?= htmlspecialchars($_SESSION['user_email'] ?? '') ?>" />
+                    value="<?= htmlspecialchars($_SESSION['email'] ?? '') ?>" />
                 <?php if (isset($errors['Edit_email'])): ?>
                     <p class="mt-1 text-xs text-red-400"><?= htmlspecialchars($errors['Edit_email']) ?></p>
                 <?php endif; ?>
