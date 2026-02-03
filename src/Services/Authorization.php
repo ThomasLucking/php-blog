@@ -21,10 +21,10 @@ class Authorization
     }
 
 
-    // public static function getUserId(): ?int
-    // {
-    //     return self::isLoggedIn() ? (int)$_SESSION['user_id'] : null;
-    // }
+    public static function getUserId(): ?int
+    {
+        return self::isLoggedIn() ? (int)$_SESSION['user_id'] : null;
+    }
 
     private static function getUserModel(): UserModel
     {

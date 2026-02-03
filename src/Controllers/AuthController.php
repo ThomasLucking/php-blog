@@ -3,6 +3,7 @@
 namespace Thomas\PhpBlog\Controllers;
 use Thomas\PhpBlog\Config\Flash;
 use Thomas\PhpBlog\Models\UserModel;
+use Thomas\PhpBlog\Services\Authorization;
 use Thomas\PhpBlog\Services\AuthService;
 use Thomas\PhpBlog\Config\Redirector;
 
@@ -27,6 +28,13 @@ class AuthController
         require_once __DIR__ . "/../../views/auth/login.php";
 
     }
+
+    public function edfitform()
+    {
+        require_once __DIR__ . "/../../views/auth/accountInfo.php";
+
+    }
+
 
 
     public function storeUser()
@@ -103,6 +111,7 @@ class AuthController
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
+            $_SESSION['email'] = $userEmail;
 
             $_SESSION['user_role'] = $user['role'];
 
@@ -121,6 +130,37 @@ class AuthController
 
     }
 
+    public function editCredentials()
+    {
+
+        $id = Authorization::getUserId();
+        $user = $this->model->findById($id);
+
+        $currentPasswordInput = $_POST['Original_password'] ?? '';
+        $newEmail = filter_input(INPUT_POST, 'Edit_email', FILTER_SANITIZE_EMAIL);
+        $newName = filter_input(INPUT_POST, 'Edit_name', FILTER_SANITIZE_STRING);
+        $newPasswordInput = $_POST['New_password'] ?? null;
+
+        if ($user && password_verify($currentPasswordInput, $user['password'])) {
+
+            $updateData = [
+                'name' => $newName,
+                'email' => $newEmail,
+                'password' => !empty($newPasswordInput)
+                    ? password_hash($newPasswordInput, PASSWORD_DEFAULT)
+                    : $user['password']
+            ];
+
+            $this->model->updateUser($id, $updateData);
+
+            $_SESSION['user_email'] = $newEmail;
+            $_SESSION['name'] = $newName;
+
+            Redirector::redirect('/');
+            exit;
+        }
+    }
+
     public function logout()
     {
         $_SESSION = [];
@@ -131,6 +171,9 @@ class AuthController
         exit;
 
     }
+
+
+
 
 
 }
