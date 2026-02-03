@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 use Thomas\PhpBlog\Config\Database;
 use Thomas\PhpBlog\Models\PostModel;
+use Thomas\PhpBlog\Services\Authorization;
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Controllers\PostController;
 use Thomas\PhpBlog\Controllers\AuthController;
@@ -53,6 +54,8 @@ $router->post('/users/store', fn() => $userController->storeUser());
 $router->get('/login', fn() => $userController->login()); // shows the form
 $router->post('/login', fn() => $userController->loginAuth()); // handle login
 $router->post('/logout', fn() => $userController->logout()); // handles logout
+$router->get('/editInfo', fn() => $userController->editForm());
+$router->post('/account/update', fn() => $userController->editCredentials());
 
 
 

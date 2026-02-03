@@ -13,11 +13,18 @@ class UserModel
     }
 
 
-    
+
     public function findByEmail(string $email): array|false
     {
         $stmt = $this->pdo->prepare("select * from users where email = :email limit 1");
         $stmt->execute(['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function findById(int $id): array|false
+    {
+        $stmt = $this->pdo->prepare("select * from users where id = :id limit 1");
+        $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -52,4 +59,25 @@ class UserModel
             throw new \Exception('Database authorization check failed.', 0, $e);
         }
     }
+
+
+
+
+    public function updateUser(int $id, array $data)
+    {
+        if (empty($data)) {
+            return false;
+        }
+        $fields = [];
+        foreach ($data as $column => $value) {
+            $fields[] = "{$column} = :{$column}";
+        }
+        $setClause = implode(', ', $fields);
+        $sql = "update users set {$setClause} where id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $data['id'] = $id;
+
+        return $stmt->execute($data);
+    }
+
 }

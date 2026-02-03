@@ -3,6 +3,7 @@
 namespace Thomas\PhpBlog\Controllers;
 use Thomas\PhpBlog\Config\Flash;
 use Thomas\PhpBlog\Models\UserModel;
+use Thomas\PhpBlog\Services\Authorization;
 use Thomas\PhpBlog\Services\AuthService;
 use Thomas\PhpBlog\Config\Redirector;
 
@@ -27,6 +28,13 @@ class AuthController
         require_once __DIR__ . "/../../views/auth/login.php";
 
     }
+
+    public function editForm()
+    {
+        require_once __DIR__ . "/../../views/auth/accountInfo.php";
+
+    }
+
 
 
     public function storeUser()
@@ -103,6 +111,7 @@ class AuthController
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
+            $_SESSION['user_email'] = $userEmail;
 
             $_SESSION['user_role'] = $user['role'];
 
@@ -121,6 +130,76 @@ class AuthController
 
     }
 
+    public function editCredentials()
+    {
+        $errors = [];
+        $id = Authorization::getUserId();
+        $user = $this->model->findById($id);
+
+        
+        if (!$user) {
+            Redirector::redirect('/login');
+            exit;
+        }
+
+        
+        $currentPassword = $_POST['Original_password'] ?? '';
+        $newEmail = filter_input(INPUT_POST, 'Edit_email', FILTER_VALIDATE_EMAIL); // Use Validate, not Sanitize
+        $newName = trim($_POST['Edit_name'] ?? '');
+        $newPassword = $_POST['New_password'] ?? '';
+
+    
+        if (empty($currentPassword) || !password_verify($currentPassword, $user['password'])) {
+            $errors['Original_password'] = "Verification failed: Current password incorrect.";
+        }
+
+
+        if (!empty($newName) && $newName !== $user['name']) {
+            if (strlen($newName) < 2) {
+                $errors['Edit_name'] = "Name is too short.";
+            }
+        }
+
+      
+        if ($newEmail && $newEmail !== $user['email']) {
+            if ($this->model->findByEmail($newEmail)) {
+                $errors['Edit_email'] = "Email already in use.";
+            }
+        }
+
+    
+        if (!empty($newPassword)) {
+            if (!$this->authService->PasswordSecurityCheck($newPassword)) {
+                $errors['New_password'] = "Password does not meet security requirements.";
+            }
+        }
+
+   
+        if (!empty($errors)) {
+            Flash::setValue('errors', $errors);
+            Redirector::redirect('/editInfo'); 
+            exit;
+        }
+
+        $updateData = [
+            'name' => !empty($newName) ? $newName : $user['name'],
+            'email' => $newEmail ?: $user['email'],
+            'password' => !empty($newPassword)
+                ? password_hash($newPassword, PASSWORD_DEFAULT)
+                : $user['password']
+        ];
+
+        $this->model->updateUser($id, $updateData);
+
+
+        $_SESSION['email'] = $updateData['email'];
+        $_SESSION['name'] = $updateData['name'];
+
+        Flash::setValue("notification", ["type" => "success", "message" => "Profile updated!"]);
+        Redirector::redirect('/');
+        exit;
+    }
+
     public function logout()
     {
         $_SESSION = [];
@@ -131,6 +210,9 @@ class AuthController
         exit;
 
     }
+
+
+
 
 
 }
