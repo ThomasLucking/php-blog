@@ -48,6 +48,9 @@
                 <p class="mb-6 text-slate-400 text-sm leading-relaxed wrap-anywhere">
                     <?= $post['content'] ?>
                 </p>
+                <p class="mb-6 text-slate-400 text-sm leading-relaxed wrap-anywhere">
+                    <?= htmlspecialchars($post['category_name'] ?? 'Uncategorized') ?>
+                </p>
 
                 <div class="flex justify-start gap-3">
                     <a href="/post/<?= $post['id'] ?>"

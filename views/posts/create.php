@@ -58,8 +58,8 @@ if (isset($error['cover_photo'])) {
         <div>
             <select
                 class="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-slate-800 border border-[#1e293b] rounded-md"
-                name="cars" id="cars">
-                <option class="" value="tech">Tech & AI</option>
+                name="category_id" id="cars">
+                <option value="tech">Tech & AI</option>
                 <option value="personal">Personal Finance</option>
                 <option value="health">Health & Wellness</option>
                 <option value="sustainability">Sustainability</option>

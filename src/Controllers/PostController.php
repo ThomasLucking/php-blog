@@ -26,30 +26,39 @@ class PostController
 
     public function fetch()
     {
-        $posts = $this->model->fetchall();
+        $posts = $this->model->linkPostsWithCategory();
+
         require_once __DIR__ . "/../../views/posts/index.php";
 
     }
 
     public function update(int $id)
     {
-        $updateData = filter_input_array(INPUT_POST, [
+        $filteredData = filter_input_array(INPUT_POST, [
             'title' => FILTER_SANITIZE_SPECIAL_CHARS,
             'content' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'category_id' => FILTER_VALIDATE_INT
         ]);
 
+
         if (isset($_FILES['cover_photo']) && $_FILES['cover_photo']['error'] === UPLOAD_ERR_OK) {
-            $updateData['image'] = $this->imageService->handleUpload($_FILES['cover_photo']);
+            $filteredData['image'] = $this->imageService->handleUpload($_FILES['cover_photo']);
         }
 
-        $this->model->update($id, array_filter($updateData));
+
+        $updateData = array_filter($filteredData, fn($value) => !is_null($value));
+
+
+        $this->model->update($id, $updateData);
+
+        Flash::setValue("notification", ["type" => "success", "message" => "Post updated!"]);
         Redirector::redirect('/');
     }
 
     public function edit(int $id)
     {
-
         $post = $this->model->findId($id);
+        $categories = $this->model->getAllCategories();
 
         if (!$post) {
             Redirector::redirect('/');
@@ -84,8 +93,11 @@ class PostController
         $filteredData = filter_input_array(INPUT_POST, [
             "title" => FILTER_SANITIZE_SPECIAL_CHARS,
             "content" => FILTER_SANITIZE_SPECIAL_CHARS,
+
+
         ]);
 
+        $filteredOptions = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_SPECIAL_CHARS);
 
         $imagePath = $this->imageService->handleUpload($_FILES['cover_photo'] ?? null);
 
@@ -107,24 +119,26 @@ class PostController
         if (!empty($error)) {
             Redirector::redirect("/create");
         }
+        $selectedId = $this->model->insertcategories(['name' => $filteredOptions]);
 
         $postData = [
             "title" => $filteredData["title"],
             "content" => $filteredData["content"],
             "image" => $imagePath,
             "user_id" => $userid,
+            "category_id" => $selectedId,
 
         ];
 
-        
+        $this->model->create($postData);
+
         Flash::setValue("notification", [
             "type" => "success",
             "message" => "Successfully created post!"
         ]);
 
-        $this->model->create($postData);
         Redirector::redirect("/");
-      
+
 
     }
 
