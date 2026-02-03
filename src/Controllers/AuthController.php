@@ -132,33 +132,72 @@ class AuthController
 
     public function editCredentials()
     {
-
+        $errors = [];
         $id = Authorization::getUserId();
         $user = $this->model->findById($id);
 
-        $currentPasswordInput = $_POST['Original_password'] ?? '';
-        $newEmail = filter_input(INPUT_POST, 'Edit_email', FILTER_SANITIZE_EMAIL);
-        $newName = filter_input(INPUT_POST, 'Edit_name', FILTER_SANITIZE_STRING);
-        $newPasswordInput = $_POST['New_password'] ?? null;
-
-        if ($user && password_verify($currentPasswordInput, $user['password'])) {
-
-            $updateData = [
-                'name' => $newName,
-                'email' => $newEmail,
-                'password' => !empty($newPasswordInput)
-                    ? password_hash($newPasswordInput, PASSWORD_DEFAULT)
-                    : $user['password']
-            ];
-
-            $this->model->updateUser($id, $updateData);
-
-            $_SESSION['user_email'] = $newEmail;
-            $_SESSION['name'] = $newName;
-
-            Redirector::redirect('/');
+        
+        if (!$user) {
+            Redirector::redirect('/login');
             exit;
         }
+
+        
+        $currentPassword = $_POST['Original_password'] ?? '';
+        $newEmail = filter_input(INPUT_POST, 'Edit_email', FILTER_VALIDATE_EMAIL); // Use Validate, not Sanitize
+        $newName = trim($_POST['Edit_name'] ?? '');
+        $newPassword = $_POST['New_password'] ?? '';
+
+    
+        if (empty($currentPassword) || !password_verify($currentPassword, $user['password'])) {
+            $errors['Original_password'] = "Verification failed: Current password incorrect.";
+        }
+
+
+        if (!empty($newName) && $newName !== $user['name']) {
+            if (strlen($newName) < 2) {
+                $errors['Edit_name'] = "Name is too short.";
+            }
+        }
+
+      
+        if ($newEmail && $newEmail !== $user['email']) {
+            if ($this->model->findByEmail($newEmail)) {
+                $errors['Edit_email'] = "Email already in use.";
+            }
+        }
+
+    
+        if (!empty($newPassword)) {
+            if (!$this->authService->PasswordSecurityCheck($newPassword)) {
+                $errors['New_password'] = "Password does not meet security requirements.";
+            }
+        }
+
+   
+        if (!empty($errors)) {
+            Flash::setValue('errors', $errors);
+            Redirector::redirect('/'); 
+            exit;
+        }
+
+        $updateData = [
+            'name' => !empty($newName) ? $newName : $user['name'],
+            'email' => $newEmail ?: $user['email'],
+            'password' => !empty($newPassword)
+                ? password_hash($newPassword, PASSWORD_DEFAULT)
+                : $user['password']
+        ];
+
+        $this->model->updateUser($id, $updateData);
+
+
+        $_SESSION['user_email'] = $updateData['email'];
+        $_SESSION['name'] = $updateData['name'];
+
+        Flash::setValue("notification", ["type" => "success", "message" => "Profile updated!"]);
+        Redirector::redirect('/');
+        exit;
     }
 
     public function logout()
