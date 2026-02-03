@@ -54,8 +54,8 @@ $router->post('/users/store', fn() => $userController->storeUser());
 $router->get('/login', fn() => $userController->login()); // shows the form
 $router->post('/login', fn() => $userController->loginAuth()); // handle login
 $router->post('/logout', fn() => $userController->logout()); // handles logout
-$router->get('/editInfo', fn() => $userController->edfitform());
-$router->post('/StoreInfo', fn() => $userController->editCredentials());
+$router->get('/editInfo', fn() => $userController->editForm());
+$router->post('/account/update', fn() => $userController->editCredentials());
 
 
 

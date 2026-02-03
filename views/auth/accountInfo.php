@@ -20,7 +20,7 @@ $getInputClass = function($fieldName) use ($errors) {
 
 <main class="grow flex items-center justify-center py-10">
     <div class="w-full max-w-sm p-6 border-2 rounded-md border-slate-800 bg-slate-900 shadow-xl">
-        <form action="/StoreInfo" method="POST">
+        <form action="/account/update" method="POST">
             <h5 class="text-xl font-bold text-white mb-6">Modify account details</h5>
 
             <div class="mb-4">

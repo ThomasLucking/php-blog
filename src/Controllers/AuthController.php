@@ -29,7 +29,7 @@ class AuthController
 
     }
 
-    public function edfitform()
+    public function editForm()
     {
         require_once __DIR__ . "/../../views/auth/accountInfo.php";
 
@@ -177,7 +177,7 @@ class AuthController
    
         if (!empty($errors)) {
             Flash::setValue('errors', $errors);
-            Redirector::redirect('/'); 
+            Redirector::redirect('/editInfo'); 
             exit;
         }
 
