@@ -1,6 +1,6 @@
 # Full Installation Guide
 
-**Thomas Blog website** is a platform where you can create and manage your own blogs. It is built using PHP and it follows the MVC architecture pattern. to allow users to easily create and manage their content. This guide will walk you through the installation process step by step.
+**Thomas Blog website** is a platform where you can create and manage your own blogs. It is built using PHP and it follows the MVC architecture pattern to allow users to easily create and manage their content. This guide will walk you through the installation process step by step.
 
 ---
 
@@ -34,7 +34,7 @@ cd php-blog
 
 ### 2. Setup the localhost:
 
-Once you have cloned the repository, you can start the localserver by running the docker containuer by executing the following command in your terminal from the root directory of the project:
+Once you have cloned the repository, you can start the local server by running the docker container by executing the following command in your terminal from the root directory of the project:
 ```bash
 docker compose up -d
 ```
@@ -54,21 +54,26 @@ Then you can create an account and start creating your own blogs and posts! You 
 
 To access the application as admin you will have to manually create the admin user in the database. You can do this by running the following command in your terminal:
 
-first you have to access the SQLITE database by running the following command in your terminal from the root directory of the project:
 ```bash
 docker compose exec app sqlite3 Data/database.db
 ```
-this will connect you to the SQLite3 CLI. You must then create the database schema by running the following command:
+First you will run the schema.sql file to create the database.db then you can run the sqlite3 CLI to enter the database and run SQL commands to create an admin user. You can run the following command to import the schema.sql file into the database:
 ```bash
-cat public/schema.sql | docker compose exec -T app sqlite3 Data/database.db
+cat public/schema.sql | docker compose exec app sqlite3 Data/database.db
 ```
+
+**Note:** If the database.db file was created in your root directory, you must move it into the Data folder to ensure it is saved correctly by Docker:
+```bash
+mv database.db Data/database.db
+```
+
 then you can update the role of your user to admin by running the following command:
 
 ```sql
 update users set role = 'admin' where email = '(the email you used to create the user)';
 ```
 
-or you can create directly an admin user
+or you can create an admin user directly
 
 However, you will need to hash the password for the application to recognize it as valid. You can generate a secure password hash locally using this command:
 ```bash
