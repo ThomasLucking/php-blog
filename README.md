@@ -65,7 +65,7 @@ this will connect you to the SQLite3 CLI, then you can run the following command
 update users set role = 'admin' where email = '(the email you used to create the user)';
 ```
 
-or you can create directly an admin user by running this command, you will first have to hash the password you want to use for the admin user using the following command in your terminal:
+or you can create directly an admin user
 
 However, you will need to hash the password otherwise the application will not recognize it as a valid password, you can hash the password using the following website I found online:
 
