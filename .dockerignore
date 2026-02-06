@@ -1,0 +1,11 @@
+.git
+.gitignore
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+Data/database.db
+
+.vscode/
+.idea/
+

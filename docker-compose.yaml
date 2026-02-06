@@ -5,6 +5,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/var/www/html
+      - /var/www/html/vendor
       - blog-data:/var/www/html/Data
       - blog-uploads:/var/www/html/public/uploads
     environment:
