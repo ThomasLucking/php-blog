@@ -2,7 +2,7 @@
 
 namespace Thomas\PhpBlog\Middleware;
 
-use \Thomas\PhpBlog\Services\Authorization;
+use Thomas\PhpBlog\Services\Authorization;
 use Thomas\PhpBlog\Config\Redirector;
 
 class Middleware

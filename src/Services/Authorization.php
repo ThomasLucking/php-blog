@@ -5,7 +5,6 @@ namespace Thomas\PhpBlog\Services;
 use Thomas\PhpBlog\Models\UserModel;
 use Thomas\PhpBlog\Config\Database;
 
-
 class Authorization
 {
     private static ?UserModel $userModel = null;

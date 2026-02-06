@@ -12,7 +12,7 @@ class Database
     {
         if (self::$instance === null) {
             $dbpath = __DIR__ . '/../../Data/database.db';
-            
+
             try {
                 $dsn = "sqlite:" . $dbpath;
                 $options = [
@@ -24,7 +24,7 @@ class Database
                 self::$instance = new PDO($dsn, null, null, $options);
             } catch (PDOException $e) {
                 throw $e;
-                
+
             }
         }
 

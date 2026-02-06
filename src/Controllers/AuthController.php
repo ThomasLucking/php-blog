@@ -1,6 +1,7 @@
 <?php
 
 namespace Thomas\PhpBlog\Controllers;
+
 use Thomas\PhpBlog\Config\Flash;
 use Thomas\PhpBlog\Models\UserModel;
 use Thomas\PhpBlog\Services\Authorization;
@@ -12,7 +13,6 @@ class AuthController
     public function __construct(
         private UserModel $model,
         private AuthService $authService,
-
     ) {
     }
 
@@ -53,19 +53,23 @@ class AuthController
             exit;
         }
 
-        if (!$UserData['name'])
+        if (!$UserData['name']) {
             $errors['name'] = "Name is required.";
+        }
 
-        if (!$UserData["email"])
+        if (!$UserData["email"]) {
             $errors['email'] = "Valid email is required.";
-        if (!$rawPassword)
+        }
+        if (!$rawPassword) {
             $errors['password'] = "Password is required.";
+        }
 
 
         if ($UserData['email']) {
             $existingUser = $this->model->findByEmail($UserData['email']);
-            if ($existingUser)
+            if ($existingUser) {
                 $errors['email'] = 'This Email is already registered';
+            }
         }
 
         if ($rawPassword) {
@@ -136,19 +140,19 @@ class AuthController
         $id = Authorization::getUserId();
         $user = $this->model->findById($id);
 
-        
+
         if (!$user) {
             Redirector::redirect('/login');
             exit;
         }
 
-        
+
         $currentPassword = $_POST['Original_password'] ?? '';
         $newEmail = filter_input(INPUT_POST, 'Edit_email', FILTER_VALIDATE_EMAIL); // Use Validate, not Sanitize
         $newName = trim($_POST['Edit_name'] ?? '');
         $newPassword = $_POST['New_password'] ?? '';
 
-    
+
         if (empty($currentPassword) || !password_verify($currentPassword, $user['password'])) {
             $errors['Original_password'] = "Verification failed: Current password incorrect.";
         }
@@ -160,24 +164,24 @@ class AuthController
             }
         }
 
-      
+
         if ($newEmail && $newEmail !== $user['email']) {
             if ($this->model->findByEmail($newEmail)) {
                 $errors['Edit_email'] = "Email already in use.";
             }
         }
 
-    
+
         if (!empty($newPassword)) {
             if (!$this->authService->PasswordSecurityCheck($newPassword)) {
                 $errors['New_password'] = "Password does not meet security requirements.";
             }
         }
 
-   
+
         if (!empty($errors)) {
             Flash::setValue('errors', $errors);
-            Redirector::redirect('/editInfo'); 
+            Redirector::redirect('/editInfo');
             exit;
         }
 
@@ -216,4 +220,3 @@ class AuthController
 
 
 }
-
