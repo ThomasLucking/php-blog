@@ -12,6 +12,7 @@ src/tailwindcss
 
 /public/css/style.css
 /src/style.css
+/public/uploads
 
 .DS_Store
 .vscode/
