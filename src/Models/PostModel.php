@@ -75,7 +75,7 @@ class PostModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function linkPostsWithCategory()
+    public function linkPostsWithCategory(): array
     {
         $stmt = $this->pdo->query('
         select posts.*, categories.name as category_name

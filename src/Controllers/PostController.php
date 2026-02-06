@@ -38,7 +38,10 @@ class PostController
         $filteredData = filter_input_array(INPUT_POST, [
             'title' => FILTER_SANITIZE_SPECIAL_CHARS,
             'content' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'category_id' => FILTER_VALIDATE_INT
+            'category_id' => [
+                'filter' => FILTER_VALIDATE_INT,
+                'flags' => FILTER_NULL_ON_FAILURE
+            ]
         ]);
 
 
@@ -98,7 +101,7 @@ class PostController
 
         ]);
 
-        
+
 
         $imagePath = $this->imageService->handleUpload($_FILES['cover_photo'] ?? null);
 
@@ -121,7 +124,14 @@ class PostController
             Redirector::redirect("/create");
         }
         $categoryId = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
-        
+        if (empty($filteredData['category_id'])) {
+            $error['category_id'] = "A category must be selected.";
+        }
+
+        if (!empty($error)) {
+            Redirector::redirect("/create");
+        }
+
         $postData = [
             "title" => $filteredData["title"],
             "content" => $filteredData["content"],
