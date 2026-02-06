@@ -20,6 +20,7 @@ Ensure the following are installed on your system:
 - PHP (higher recommended)
 - Composer (PHP dependency manager)
 - Git (for cloning the repository)
+- Docker (for running the application in a containerized environment)
 
 ---
 
