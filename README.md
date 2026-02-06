@@ -1,6 +1,6 @@
 # Full Installation Guide
 
-**Thomas Blog website** is a platform where you can create and manager your own blogs. It is built using PHP and it follows the MVC architecture pattern. to allow users to easily create and manage their content. This guide will walk you through the installation process step by step.
+**Thomas Blog website** is a platform where you can create and manage your own blogs. It is built using PHP and it follows the MVC architecture pattern. to allow users to easily create and manage their content. This guide will walk you through the installation process step by step.
 
 ---
 
@@ -17,8 +17,6 @@
 
 Ensure the following are installed on your system:
 
-- PHP (higher recommended)
-- Composer (PHP dependency manager)
 - Git (for cloning the repository)
 - Docker (for running the application in a containerized environment)
 
@@ -60,7 +58,11 @@ first you have to access the SQLITE database by running the following command in
 ```bash
 docker compose exec app sqlite3 Data/database.db
 ```
-this will connect you to the SQLite3 CLI, then you can run the following command to create a new user:
+this will connect you to the SQLite3 CLI. You must then create the database schema by running the following command:
+```bash
+cat public/schema.sql | docker compose exec -T app sqlite3 Data/database.db
+```
+then you can update the role of your user to admin by running the following command:
 
 ```sql
 update users set role = 'admin' where email = '(the email you used to create the user)';
@@ -68,10 +70,10 @@ update users set role = 'admin' where email = '(the email you used to create the
 
 or you can create directly an admin user
 
-However, you will need to hash the password otherwise the application will not recognize it as a valid password, you can hash the password using the following website I found online:
-
-(Click here)[https://bcrypt-generator.com/]
-
+However, you will need to hash the password for the application to recognize it as valid. You can generate a secure password hash locally using this command:
+```bash
+php -r 'echo password_hash("your_password_here", PASSWORD_DEFAULT);'
+```
 
 ```sql
 insert into users (name, email, password, role) values ('Admin', 'admin@gmail.com', '(HashedPassword)', 'admin');
