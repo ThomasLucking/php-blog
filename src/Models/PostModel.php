@@ -2,7 +2,6 @@
 
 namespace Thomas\PhpBlog\Models;
 
-
 use PDO;
 
 class PostModel

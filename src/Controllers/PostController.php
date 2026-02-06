@@ -4,7 +4,6 @@ namespace Thomas\PhpBlog\Controllers;
 
 use Thomas\PhpBlog\Config\Flash;
 use Thomas\PhpBlog\Models\PostModel;
-
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Config\Redirector as Redirector;
 
@@ -13,8 +12,6 @@ class PostController
     public function __construct(
         private PostModel $model,
         private ImageService $imageService,
-
-
     ) {
     }
 
@@ -38,7 +35,10 @@ class PostController
         $filteredData = filter_input_array(INPUT_POST, [
             'title' => FILTER_SANITIZE_SPECIAL_CHARS,
             'content' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'category_id' => ['filter' => FILTER_VALIDATE_INT, 'flags' => FILTER_NULL_ON_FAILURE]
+            'category_id' => [
+                'filter' => FILTER_VALIDATE_INT,
+                'flags' => FILTER_NULL_ON_FAILURE
+            ]
         ]);
 
 
@@ -47,7 +47,7 @@ class PostController
         }
 
 
-        $updateData = array_filter($filteredData, fn($value) => !is_null($value));
+        $updateData = array_filter($filteredData, fn ($value) => !is_null($value));
 
 
         $this->model->update($id, $updateData);
@@ -94,7 +94,7 @@ class PostController
         $filteredData = filter_input_array(INPUT_POST, [
             "title" => FILTER_SANITIZE_SPECIAL_CHARS,
             "content" => FILTER_SANITIZE_SPECIAL_CHARS,
-            "category_id"=> FILTER_VALIDATE_INT,
+            "category_id" => FILTER_VALIDATE_INT,
 
 
         ]);
@@ -125,7 +125,14 @@ class PostController
         if (!empty($error)) {
             Redirector::redirect("/create");
         }
-        
+        $categoryId = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
+        if (empty($filteredData['category_id'])) {
+            $error['category_id'] = "A category must be selected.";
+        }
+
+        if (!empty($error)) {
+            Redirector::redirect("/create");
+        }
 
         $postData = [
             "title" => $filteredData["title"],
@@ -151,5 +158,3 @@ class PostController
 
 
 }
-
-

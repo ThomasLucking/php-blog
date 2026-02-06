@@ -15,5 +15,5 @@ create table posts (
     created_at datetime default current_timestamp,
     user_id integer not null,
     foreign key (user_id) references users(id) on delete cascade,
+    
 );
-
