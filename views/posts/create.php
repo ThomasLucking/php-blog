@@ -18,6 +18,7 @@ if (isset($error['cover_photo'])) {
 
 <main class="grow flex flex-col m-6 ">
     <form action="/posts/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4 w-full">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div>
             <?php if (isset($error['title'])): ?>
                 <p class="text-2xs text-red-400">
@@ -67,28 +68,6 @@ if (isset($error['cover_photo'])) {
                 <?php endforeach; ?>
             </select>
         </div>
-
-        <div class="space-y-3">
-            <label class="block text-sm font-medium text-white text-opacity-90">Post Availability</label>
-            <div class="flex flex-col gap-2">
-                <div class="flex items-center">
-                    <input id="availability-public" type="radio" value="public" name="availability"
-                        class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600 focus:ring-blue-500 focus:ring-offset-slate-800 focus:ring-2">
-                    <label for="availability-public" class="ms-2 text-sm font-medium text-slate-300">Public</label>
-                </div>
-                <div class="flex items-center">
-                    <input id="availability-private" type="radio" value="private" name="availability"
-                        class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600 focus:ring-blue-500 focus:ring-offset-slate-800 focus:ring-2">
-                    <label for="availability-private" class="ms-2 text-sm font-medium text-slate-300">Private</label>
-                </div>
-                <div class="flex items-center">
-                    <input id="availability-personal" type="radio" value="personal" name="availability"
-                        class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600 focus:ring-blue-500 focus:ring-offset-slate-800 focus:ring-2">
-                    <label for="availability-personal" class="ms-2 text-sm font-medium text-slate-300">Personal</label>
-                </div>
-            </div>
-        </div>
-
         <div class="flex justify-end mt-4">
             <button type="submit"
                 class="inline-block bg-blue-600 text-white text-sm font-bold rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 px-8 py-3 shadow-md outline-none transition-all active:scale-95">

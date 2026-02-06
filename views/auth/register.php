@@ -18,6 +18,7 @@ if (isset($errors['password'])) {
 <main class="grow flex items-center justify-center">
     <div class="w-full max-w-sm p-6 border-2 rounded-md border-[#1e293b] bg-[#0f172a] shadow-xl">
         <form action="/users/store" method="POST">
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <h5 class="text-xl font-bold text-white mb-6">Create an account</h5>
             <?php if (isset($errors['name'])): ?>
                 <p class="text-2xs text-red-400">

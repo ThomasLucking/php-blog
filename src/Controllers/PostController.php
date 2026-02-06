@@ -6,6 +6,7 @@ use Thomas\PhpBlog\Config\Flash;
 use Thomas\PhpBlog\Models\PostModel;
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Config\Redirector as Redirector;
+use Thomas\PhpBlog\Config\Csrf;
 
 class PostController
 {
@@ -49,8 +50,12 @@ class PostController
 
         $updateData = array_filter($filteredData, fn ($value) => !is_null($value));
 
-
+        
+        Csrf::Protection('csrf_token');
+        
+        
         $this->model->update($id, $updateData);
+        
 
         Flash::setValue("notification", ["type" => "success", "message" => "Post updated!"]);
         Redirector::redirect('/');
@@ -101,7 +106,9 @@ class PostController
 
 
 
+        
         $imagePath = $this->imageService->handleUpload($_FILES['cover_photo'] ?? null);
+        
 
         $userid = $_SESSION['user_id'];
 
@@ -123,14 +130,17 @@ class PostController
         }
 
         if (!empty($error)) {
+            Flash::setValue('errors', $error);
             Redirector::redirect("/create");
         }
-        $categoryId = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
-        if (empty($filteredData['category_id'])) {
-            $error['category_id'] = "A category must be selected.";
-        }
 
-        if (!empty($error)) {
+        
+        Csrf::Protection('csrf_token');
+        
+
+        if (!$imagePath) {
+            $error['cover_photo'] = "Image is required.";
+            Flash::setValue('errors', $error);
             Redirector::redirect("/create");
         }
 
@@ -143,7 +153,13 @@ class PostController
 
         ];
 
-        $this->model->create($postData);
+        try {
+            $this->model->create($postData);
+            Redirector::redirect("/");
+        } catch (\Exception $e) {
+            Flash::setValue('errors', ['create' => $e->getMessage()]);
+            Redirector::redirect("/create");
+        }
 
         Flash::setValue("notification", [
             "type" => "success",

@@ -31,6 +31,7 @@ if (isset($errors['password'])) {
             </div>
         <?php endif; ?>
         <form action="/login" method="POST">
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <h5 class="text-xl font-bold text-white mb-6">Sign in to our platform</h5>
             <?php if (isset($errors['email'])): ?>
                 <p class="text-2xs text-red-400">

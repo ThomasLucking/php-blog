@@ -36,17 +36,17 @@
         <?php foreach ($posts as $post): ?>
             <div class="block max-w-sm p-6 border-2 rounded-md border-[#1e293b] bg-[#0f172a] shadow-xl mt-20">
                 <a href="#">
-                    <img class="rounded-sm mb-4" src="/uploads/<?= $post['image'] ?>" alt="Blog Post" />
+                    <img class="rounded-sm mb-4" src="/uploads/<?=  htmlspecialchars($post['image']) ?>" alt="Blog Post" />
                 </a>
 
                 <a href="/post/<?= $post['id'] ?>">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-white wrap-anywhere">
-                        <?= $post['title'] ?>
+                        <?=  htmlspecialchars($post['title'] ) ?>
                     </h5>
                 </a>
 
                 <p class="mb-6 text-slate-400 text-sm leading-relaxed wrap-anywhere">
-                    <?= $post['content'] ?>
+                     <?= htmlspecialchars($post['content']) ?>
                 </p>
                 <p class="mb-6 text-slate-400 text-sm leading-relaxed wrap-anywhere">
                     <?= htmlspecialchars($post['category_name'] ?? 'Uncategorized') ?>

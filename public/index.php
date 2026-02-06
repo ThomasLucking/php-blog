@@ -1,8 +1,8 @@
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 use Thomas\PhpBlog\Config\Database;
 use Thomas\PhpBlog\Models\PostModel;
-use Thomas\PhpBlog\Services\Authorization;
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Controllers\PostController;
 use Thomas\PhpBlog\Controllers\AuthController;
@@ -12,6 +12,9 @@ use Thomas\PhpBlog\Middleware\Middleware;
 use Thomas\PhpBlog\Config\Router;
 
 session_start();
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 $pdo = Database::getConnection();
 
 $postModel = new PostModel($pdo);
@@ -34,28 +37,28 @@ $segments = explode('/', trim($uri, '/'));
 $id = (isset($segments[1]) && is_numeric($segments[1])) ? (int) $segments[1] : null;
 
 // Post routes
-$router->get('/', action: fn() => $controller->fetch());
-$router->get('/create', fn() => $controller->create())
+$router->get('/', action: fn () => $controller->fetch());
+$router->get('/create', fn () => $controller->create())
     ->middleware(Middleware::class);
 
-$router->post('/posts/store', action: fn() => $controller->store());
+$router->post('/posts/store', action: fn () => $controller->store());
 
 if ($id) {
-    $router->get("/post/$id", fn() => $controller->fetchViaID($id));
-    $router->get("/edit/$id", fn() => $controller->edit($id))
+    $router->get("/post/$id", fn () => $controller->fetchViaID($id));
+    $router->get("/edit/$id", fn () => $controller->edit($id))
         ->middleware(Middleware::class);
-    $router->post("/update/$id", fn() => $controller->update($id));
+    $router->post("/update/$id", fn () => $controller->update($id));
 }
 
 
 // User routes
-$router->get("/register", fn() => $userController->create());
-$router->post('/users/store', fn() => $userController->storeUser());
-$router->get('/login', fn() => $userController->login()); // shows the form
-$router->post('/login', fn() => $userController->loginAuth()); // handle login
-$router->post('/logout', fn() => $userController->logout()); // handles logout
-$router->get('/editInfo', fn() => $userController->editForm());
-$router->post('/account/update', fn() => $userController->editCredentials());
+$router->get("/register", fn () => $userController->create());
+$router->post('/users/store', fn () => $userController->storeUser());
+$router->get('/login', fn () => $userController->login()); // shows the form
+$router->post('/login', fn () => $userController->loginAuth()); // handle login
+$router->post('/logout', fn () => $userController->logout()); // handles logout
+$router->get('/editInfo', fn () => $userController->editForm());
+$router->post('/account/update', fn () => $userController->editCredentials());
 
 
 
@@ -64,15 +67,8 @@ if (is_callable($action)) {
     $action();
 } else {
     http_response_code(404);
-        require_once __DIR__ .'/../views/404.php';
+    require_once __DIR__ .'/../views/404.php';
     echo "404 - Page Not Found";
     exit;
 
 }
-
-
-
-
-
-
-

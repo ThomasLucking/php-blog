@@ -7,7 +7,7 @@ use Thomas\PhpBlog\Models\UserModel;
 use Thomas\PhpBlog\Services\Authorization;
 use Thomas\PhpBlog\Services\AuthService;
 use Thomas\PhpBlog\Config\Redirector;
-
+use Thomas\PhpBlog\Config\Csrf;
 class AuthController
 {
     public function __construct(
@@ -88,6 +88,8 @@ class AuthController
 
 
         $hashedPassword = $this->authService->hashPassword(password: $rawPassword);
+        Csrf::Protection('csrf_token');
+
         $this->model->storeUser([
             "name" => $UserData["name"],
             "email" => $UserData["email"],
@@ -192,6 +194,8 @@ class AuthController
                 ? password_hash($newPassword, PASSWORD_DEFAULT)
                 : $user['password']
         ];
+
+        Csrf::Protection('csrf_token');
 
         $this->model->updateUser($id, $updateData);
 

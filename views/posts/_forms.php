@@ -16,6 +16,7 @@ if (isset($error['cover_photo'])) {
 <main class="grow flex flex-col m-6 ">
     <form action="/update/<?= $post['id'] ?>" method="POST" enctype="multipart/form-data"
         class="flex flex-col gap-4 w-full">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div>
             <label for="title" class="block mb-2 text-sm font-medium text-white">Post title</label>
             <input type="text" id="title" name="title" value="<?= htmlspecialchars($post['title']) ?>"
