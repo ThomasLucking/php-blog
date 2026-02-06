@@ -23,4 +23,4 @@ create table categories(
     id integer primary key autoincrement,
     name varchar(50) not null
 
-)
+);

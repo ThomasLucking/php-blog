@@ -21,6 +21,7 @@ class PostController
 
     public function create()
     {
+        $categories = $this->model->getAllCategories();
         require_once __DIR__ . "/../../views/posts/create.php";
     }
 
@@ -97,7 +98,7 @@ class PostController
 
         ]);
 
-        $filteredOptions = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_SPECIAL_CHARS);
+        
 
         $imagePath = $this->imageService->handleUpload($_FILES['cover_photo'] ?? null);
 
@@ -119,14 +120,14 @@ class PostController
         if (!empty($error)) {
             Redirector::redirect("/create");
         }
-        $selectedId = $this->model->insertcategories(['name' => $filteredOptions]);
-
+        $categoryId = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
+        
         $postData = [
             "title" => $filteredData["title"],
             "content" => $filteredData["content"],
             "image" => $imagePath,
             "user_id" => $userid,
-            "category_id" => $selectedId,
+            "category_id" => $categoryId,
 
         ];
 

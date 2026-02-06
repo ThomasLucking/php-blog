@@ -64,12 +64,6 @@ class PostModel
         return $stmt->execute($data);
     }
 
-    public function insertcategories(array $data)
-    {
-        $stmt = $this->pdo->prepare('insert into categories (name) values (:name)');
-        $stmt->execute($data);
-        return $this->pdo->lastInsertId();
-    }
 
     public function getAllCategories(): array
     {

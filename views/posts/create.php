@@ -56,15 +56,15 @@ if (isset($error['cover_photo'])) {
                 class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-slate-800 border border-[#1e293b] rounded-md <?= $inputColors ?>">
         </div>
         <div>
-            <select
-                class="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-slate-800 border border-[#1e293b] rounded-md"
-                name="category_id" id="cars">
-                <option value="tech">Tech & AI</option>
-                <option value="personal">Personal Finance</option>
-                <option value="health">Health & Wellness</option>
-                <option value="sustainability">Sustainability</option>
-                <option value="food">Food</option>
-                <option value="nature">Nature & Trees</option>
+            <label for="category_id" class="block mb-2 text-sm font-medium text-white">Category</label>
+            <select name="category_id" id="category_id" required
+                class="block w-full text-sm text-white bg-slate-800 border border-[#1e293b] rounded-md p-3.5 outline-none focus:ring-[#60a5fa] focus:border-[#60a5fa] <?= $inputColors ?>">
+                <option value="" disabled selected>Select a Category</option>
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?= $category['id'] ?>" class="bg-slate-800 text-white">
+                        <?= htmlspecialchars($category['name']) ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
 
