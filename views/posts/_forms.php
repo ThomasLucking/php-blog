@@ -16,6 +16,7 @@ if (isset($error['cover_photo'])) {
 <main class="grow flex flex-col m-6 ">
     <form action="/update/<?= $post['id'] ?>" method="POST" enctype="multipart/form-data"
         class="flex flex-col gap-4 w-full">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div>
             <label for="title" class="block mb-2 text-sm font-medium text-white">Post title</label>
             <input type="text" id="title" name="title" value="<?= htmlspecialchars($post['title']) ?>"
@@ -35,16 +36,18 @@ if (isset($error['cover_photo'])) {
         </div>
 
         <div>
-            <select
-                class="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-slate-800 border border-[#1e293b] rounded-md"
-                name="cars" id="cars">
-                <option class="" value="volvo">Tech & AI</option>
-                <option value="saab">Personal Finance</option>
-                <option value="opel">Health & Wellness</option>
-                <option value="audi">Sustainability</option>
-                <option value="audi">Food</option>
-                <option value="audi">Nature & Trees</option>
-            </select>
+            <div>
+                <label for="category_id" class="block mb-2 text-sm font-medium text-white">Category</label>
+                <select name="category_id" id="category_id"
+                    class="block w-full text-sm text-white bg-slate-800 border border-[#1e293b] rounded-md p-3.5 outline-none focus:ring-[#60a5fa] focus:border-[#60a5fa]">
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category['id'] ?>" <?= ($category['id'] == $post['category_id']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($category['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+
+                </select>
+            </div>
         </div>
 
         <div class="space-y-3">

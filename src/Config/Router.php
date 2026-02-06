@@ -2,8 +2,6 @@
 
 namespace Thomas\PhpBlog\Config;
 
-use Thomas\PhpBlog\Middleware\Middleware;
-
 class Router
 {
     public $routes = [];

@@ -2,7 +2,6 @@
 
 namespace Thomas\PhpBlog\Models;
 
-
 use PDO;
 
 class PostModel
@@ -12,12 +11,11 @@ class PostModel
     }
 
 
-
     public function create(array $data)
     {
 
         try {
-            $stmt = $this->pdo->prepare("insert into posts (title, image, content, user_id) values (:title, :image, :content, :user_id)");
+            $stmt = $this->pdo->prepare("insert into posts (title, image, content, user_id, category_id) values (:title, :image, :content, :user_id, :category_id)");
             $stmt->execute($data);
             return true;
         } catch (\PDOException $e) {
@@ -50,7 +48,7 @@ class PostModel
     public function update($id, array $data)
     {
         if (empty($data)) {
-            return false; 
+            return false;
         }
         $fields = [];
         foreach ($data as $column => $value) {
@@ -61,7 +59,32 @@ class PostModel
         $stmt = $this->pdo->prepare($sql);
         $data['id'] = $id;
 
+
         return $stmt->execute($data);
+    }
+
+
+    public function getAllCategories(): array
+    {
+        $sql = "select id, name from categories order by name asc";
+
+        $stmt = $this->pdo->query($sql);
+
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function linkPostsWithCategory(): array
+    {
+        $stmt = $this->pdo->query('
+        select posts.*, categories.name as category_name
+        from posts
+        left join categories on posts.category_id = categories.id
+        order by posts.id desc
+    ');
+
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

@@ -4,52 +4,67 @@ namespace Thomas\PhpBlog\Controllers;
 
 use Thomas\PhpBlog\Config\Flash;
 use Thomas\PhpBlog\Models\PostModel;
-
 use Thomas\PhpBlog\Services\ImageService;
 use Thomas\PhpBlog\Config\Redirector as Redirector;
+use Thomas\PhpBlog\Config\Csrf;
 
 class PostController
 {
     public function __construct(
         private PostModel $model,
         private ImageService $imageService,
-
-
     ) {
     }
 
 
     public function create()
     {
+        $categories = $this->model->getAllCategories();
         require_once __DIR__ . "/../../views/posts/create.php";
     }
 
     public function fetch()
     {
-        $posts = $this->model->fetchall();
+        $posts = $this->model->linkPostsWithCategory();
+
         require_once __DIR__ . "/../../views/posts/index.php";
 
     }
 
     public function update(int $id)
     {
-        $updateData = filter_input_array(INPUT_POST, [
+        $filteredData = filter_input_array(INPUT_POST, [
             'title' => FILTER_SANITIZE_SPECIAL_CHARS,
             'content' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'category_id' => [
+                'filter' => FILTER_VALIDATE_INT,
+                'flags' => FILTER_NULL_ON_FAILURE
+            ]
         ]);
 
+
         if (isset($_FILES['cover_photo']) && $_FILES['cover_photo']['error'] === UPLOAD_ERR_OK) {
-            $updateData['image'] = $this->imageService->handleUpload($_FILES['cover_photo']);
+            $filteredData['image'] = $this->imageService->handleUpload($_FILES['cover_photo']);
         }
 
-        $this->model->update($id, array_filter($updateData));
+
+        $updateData = array_filter($filteredData, fn ($value) => !is_null($value));
+
+        
+        Csrf::Protection('csrf_token');
+        
+        
+        $this->model->update($id, $updateData);
+        
+
+        Flash::setValue("notification", ["type" => "success", "message" => "Post updated!"]);
         Redirector::redirect('/');
     }
 
     public function edit(int $id)
     {
-
         $post = $this->model->findId($id);
+        $categories = $this->model->getAllCategories();
 
         if (!$post) {
             Redirector::redirect('/');
@@ -84,10 +99,16 @@ class PostController
         $filteredData = filter_input_array(INPUT_POST, [
             "title" => FILTER_SANITIZE_SPECIAL_CHARS,
             "content" => FILTER_SANITIZE_SPECIAL_CHARS,
+            "category_id" => FILTER_VALIDATE_INT,
+
+
         ]);
 
 
+
+        
         $imagePath = $this->imageService->handleUpload($_FILES['cover_photo'] ?? null);
+        
 
         $userid = $_SESSION['user_id'];
 
@@ -104,7 +125,22 @@ class PostController
             $error['cover_photo'] = "Image is required.";
         }
 
+        if (empty($filteredData['category_id'])) {
+            $error['category_id'] = "A category must be selected.";
+        }
+
         if (!empty($error)) {
+            Flash::setValue('errors', $error);
+            Redirector::redirect("/create");
+        }
+
+        
+        Csrf::Protection('csrf_token');
+        
+
+        if (!$imagePath) {
+            $error['cover_photo'] = "Image is required.";
+            Flash::setValue('errors', $error);
             Redirector::redirect("/create");
         }
 
@@ -113,23 +149,28 @@ class PostController
             "content" => $filteredData["content"],
             "image" => $imagePath,
             "user_id" => $userid,
+            "category_id" => $filteredData["category_id"],
 
         ];
 
-        
+        try {
+            $this->model->create($postData);
+            Redirector::redirect("/");
+        } catch (\Exception $e) {
+            Flash::setValue('errors', ['create' => $e->getMessage()]);
+            Redirector::redirect("/create");
+        }
+
         Flash::setValue("notification", [
             "type" => "success",
             "message" => "Successfully created post!"
         ]);
 
-        $this->model->create($postData);
         Redirector::redirect("/");
-      
+
 
     }
 
 
 
 }
-
-

@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Thomas\PhpBlog\Models;
+
 use PDO;
-
-
 
 class UserModel
 {

@@ -19,7 +19,7 @@ class ImageService
 
         $allowed = ["image/jpeg", "image/png"];
         if (!in_array($mimeType, $allowed)) {
-            die("Invalid file type. Only JPG and PNG allowed.");
+            throw new \Exception('Invalid file type. Only JPG and PNG allowed.');
         }
 
         $upload_dir = __DIR__ . "/../../public/uploads/";
