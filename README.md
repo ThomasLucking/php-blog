@@ -52,23 +52,25 @@ Then you can create an account and start creating your own blogs and posts! You 
 
 ### 5. Accessing the application as admin:
 
-To access the application as admin you will have to manually create the admin user in the database. You can do this by running the following command in your terminal:
+By default, newly registered users have a standard role. To perform administrative actions, you must manually elevate a user to the admin role within the SQLite database.
+
+To get the docker id just run the following command
+```bash
+docker ps
+```
+and then you can access the container by running the following command:
 
 ```bash
-docker compose exec app sqlite3 Data/database.db
+docker exec -it container_id sh
 ```
-First you will run the schema.sql file to create the database.db then you can run the sqlite3 CLI to enter the database and run SQL commands to create an admin user. You can run the following command to import the schema.sql file into the database:
+
+then you need to open the database in the sqlite3 command line interface by running the following command:
 ```bash
-cat public/schema.sql | docker compose exec app sqlite3 Data/database.db
+sqlite3 Data/database.db
 ```
+to exit the sqlite3 command line interface, you can type `.exit` and press enter.
 
-**Note:** If the database.db file was created in your root directory, you must move it into the Data folder to ensure it is saved correctly by Docker:
-```bash
-mv database.db Data/database.db
-```
-
-then you can update the role of your user to admin by running the following command:
-
+then you can update the role of the user to admin by running the following SQL command:
 ```sql
 update users set role = 'admin' where email = '(the email you used to create the user)';
 ```
@@ -79,6 +81,7 @@ However, you will need to hash the password for the application to recognize it 
 ```bash
 php -r 'echo password_hash("your_password_here", PASSWORD_DEFAULT);'
 ```
+Then you can insert the new user inside the users table.
 
 ```sql
 insert into users (name, email, password, role) values ('Admin', 'admin@gmail.com', '(HashedPassword)', 'admin');
