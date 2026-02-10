@@ -20,7 +20,8 @@ WORKDIR /var/www/html
 
 
 COPY composer.json composer.lock* ./
-RUN composer install --no-scripts --no-autoloader --no-dev --ignore-platform-reqs
+COPY package.json package-lock.json ./
+RUN composer install --no-scripts --no-autoloader --no-dev
 
 
 COPY . .
@@ -38,7 +39,7 @@ RUN chmod -R 775 /var/www/html/Data && chown -R www-data:www-data /var/www/html/
 
 RUN chmod -R 775 /var/www/html/public/uploads
 
-FROM nginx:alpine AS nginix-server
+FROM nginx:alpine AS nginx-server
 
 WORKDIR /var/www/html
 

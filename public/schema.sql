@@ -3,7 +3,7 @@ create table users (
     name varchar(35) not null check(length(name) <= 35),
     email text not null unique,
     password text not null,
-    role text not null -- 'admin' or 'user'
+    role text not null check(role in ('admin', 'user'))
 );
 
 create table categories(

@@ -1,8 +1,9 @@
 .git
 .gitignore
-docker-compose.yml
+docker-compose.yaml
 Dockerfile
 .dockerignore
+node_modules/
 
 Data/database.db
 

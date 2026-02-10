@@ -53,15 +53,10 @@ Then you can create an account and start creating your own blogs and posts! You 
 ### 5. Accessing the application as admin:
 
 By default, newly registered users have a standard role. To perform administrative actions, you must manually elevate a user to the admin role within the SQLite database.
-
-To get the docker id just run the following command
-```bash
-docker ps
-```
 and then you can access the container by running the following command:
 
 ```bash
-docker exec -it container_id sh
+docker compose exec -it php-blog-app-1 sh
 ```
 
 then you need to open the database in the sqlite3 command line interface by running the following command:

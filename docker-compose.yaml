@@ -15,7 +15,7 @@ services:
   nginx:
     build:
       context: .
-      target: nginix-server
+      target: nginx-server
     ports:
       - "8000:80" 
     volumes:
