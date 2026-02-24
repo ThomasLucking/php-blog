@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: .
+      target: php-server
+    
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/node_modules
+      - /var/www/html/public/css
+      - blog-data:/var/www/html/Data
+      - blog-uploads:/var/www/html/public/uploads
+
+
+  nginx:
+    build:
+      context: .
+      target: nginix-server
+    ports:
+      - "8000:80" 
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - blog-uploads:/var/www/html/public/uploads
+    depends_on:
+      - app
+
+volumes:
+  blog-data:
+  blog-uploads:

@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
-/* '..' goes up from 'src' to the project root.
-   From the root, we go down into 'views' or 'public'.
-*/
+/* '..' goes up from 'src' to the project root. */
 @source "../views/**/*.php";
 @source "../public/**/*.php";
+@source "../src/**/*.php";
+
+/* If you have an index.php in the root, add this: */
+@source "../*.php";
